@@ -3,35 +3,36 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class CardapioPage extends StatefulWidget {
-  const CardapioPage({super.key});
+  const CardapioPage({Key? key}) : super(key: key);
 
   @override
   State<CardapioPage> createState() => _CardapioPageState();
 }
 
 class _CardapioPageState extends State<CardapioPage> {
-  List<dynamic> produtos = [];
+  List<dynamic> categorias = [];
+  List<dynamic> subCategorias = [];
   bool isLoading = true;
 
   @override
   void initState() {
     super.initState();
-    listaProdutos();
+    listaCardapio();
   }
 
-  Future<void> listaProdutos() async {
+  Future<void> listaCardapio() async {
     try {
       final response =
-          await http.get(Uri.parse('http://10.56.45.27/public/api/produtos'));
-          // await http.get(Uri.parse('http://10.56.45.27/public/api/cardapio'));
-      // await http.get(Uri.parse('http://192.168.0.10/public/api/produtos'));
-      print("lista de produtos");
+          await http.get(Uri.parse('http://10.56.45.27/public/api/cardapio'));
       if (response.statusCode == 200) {
+        final data = json.decode(response.body);
         setState(() {
-          produtos = json.decode(response.body);
-          print(produtos);
+          categorias = data['categorias'];
+          subCategorias = data['subCategorias'];
           isLoading = false;
         });
+      } else {
+        mostrarError('Erro ao carregar dados');
       }
     } catch (e) {
       mostrarError('Erro: $e');
@@ -106,50 +107,178 @@ class _CardapioPageState extends State<CardapioPage> {
       ),
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
-          : ListView.builder(
-              itemCount: produtos.length,
-              itemBuilder: (context, index) {
-                // Cada produto será armazenado na variável produto enquanto produtos é percorrido
-                final produto = produtos[index];
-                return Card(
-                  margin: const EdgeInsets.all(8.0),
-                  color: const Color(0xFFfcfcfc),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Padding(
+          : ListView(
+              children: [
+                // Listar Categorias
+                ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: categorias.length,
+                  itemBuilder: (context, index) {
+                    final categoria = categorias[index];
+                    final produtos = categoria['produtos'];
+
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Título da Categoria
+                        Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                produto['nome'],
-                                style: const TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.bold),
-                                textAlign: TextAlign.start,
-                              ),
-                              Text(produto['descricao'],
-                                  maxLines: 2, overflow: TextOverflow.ellipsis),
-                              const SizedBox(
-                                height: 30,
-                              ),
-                              Text(
-                                  'R\$ ${double.parse(produto['preco']).toStringAsFixed(2)}')
-                            ],
+                          child: Text(
+                            categoria['titulo_categoria'],
+                            style: const TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xff8c6342),
+                            ),
                           ),
                         ),
-                      ),
-                      // vai ter uma imagem da internet, pois o campo 'imagem' do meu objeto servicos, contém um link da internet que manda para uma imagem
-                      Image.network(
-                        produto['imagem'],
-                        width: 110,
-                        height: 80,
-                        fit: BoxFit.cover,
-                      ),
-                    ],
-                  ),
-                );
-              },
+                        // Lista de Produtos da Categoria
+                        ListView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: produtos.length,
+                          itemBuilder: (context, prodIndex) {
+                            final produto = produtos[prodIndex];
+                            return Card(
+                              margin: const EdgeInsets.all(8.0),
+                              child: Row(
+                                children: [
+                                  // Informações do Produto
+                                  Expanded(
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            produto['nome'],
+                                            style: const TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          Text(
+                                            produto['descricao'],
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                          const SizedBox(height: 10),
+                                          Text(
+                                            'R\$ ${double.parse(produto['preco']).toStringAsFixed(2)}',
+                                            style: const TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.green,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  // Imagem do Produto
+                                  Image.network(
+                                    produto['imagem'],
+                                    width: 110,
+                                    height: 80,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        ),
+                      ],
+                    );
+                  },
+                ),
+
+                // Listar Subcategorias
+                ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: subCategorias.length,
+                  itemBuilder: (context, index) {
+                    final subCategoria = subCategorias[index];
+                    final produtos = subCategoria['produtos'];
+
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Título da Subcategoria
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            subCategoria['titulo_sub_categoria'],
+                            style: const TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xff8c6342),
+                            ),
+                          ),
+                        ),
+                        // Lista de Produtos da Subcategoria
+                        ListView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: produtos.length,
+                          itemBuilder: (context, prodIndex) {
+                            final produto = produtos[prodIndex];
+                            return Card(
+                              margin: const EdgeInsets.all(8.0),
+                              child: Row(
+                                children: [
+                                  // Informações do Produto
+                                  Expanded(
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            produto['nome'],
+                                            style: const TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          Text(
+                                            produto['descricao'],
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                          const SizedBox(height: 10),
+                                          Text(
+                                            'R\$ ${double.parse(produto['preco']).toStringAsFixed(2)}',
+                                            style: const TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.green,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  // Imagem do Produto
+                                  Image.network(
+                                    produto['imagem'],
+                                    width: 110,
+                                    height: 80,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        ),
+                      ],
+                    );
+                  },
+                ),
+              ],
             ),
     );
   }
