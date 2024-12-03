@@ -22,11 +22,14 @@ class _CardapioPageState extends State<CardapioPage> {
   Future<void> listaProdutos() async {
     try {
       final response =
-          // await http.get(Uri.parse('http://10.56.45.27/public/api/produtos'));
-          await http.get(Uri.parse('http://192.168.0.10/public/api/produtos'));
+          await http.get(Uri.parse('http://10.56.45.27/public/api/produtos'));
+          // await http.get(Uri.parse('http://10.56.45.27/public/api/cardapio'));
+      // await http.get(Uri.parse('http://192.168.0.10/public/api/produtos'));
+      print("lista de produtos");
       if (response.statusCode == 200) {
         setState(() {
           produtos = json.decode(response.body);
+          print(produtos);
           isLoading = false;
         });
       }
@@ -44,18 +47,18 @@ class _CardapioPageState extends State<CardapioPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        // title: Row(
-        //   // mainAxis é usado em Row (agrupa na horizontal, e é tipo o jusify content do flex)
-        //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        //   children: [
-        //     //logo no canto esquerdo
-        //     Image.asset(
-        //       'bua3.png',
-        //       height: 40, // altura da logo
-        //     ),
-        //     const Icon(Icons.shopping_bag)
-        //   ],
-        // ),
+        title: Row(
+          // mainAxis é usado em Row (agrupa na horizontal, e é tipo o jusify content do flex)
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            //logo no canto esquerdo
+            Image.asset(
+              'assets/bua3.png',
+              height: 40, // altura da logo
+            ),
+            const Icon(Icons.shopping_bag)
+          ],
+        ),
         // definindo cor de fundo da appBar (basicamente a navbar daqui)
         backgroundColor: const Color(0xff8c6342),
       ),
@@ -70,7 +73,7 @@ class _CardapioPageState extends State<CardapioPage> {
             SizedBox(
               height: 100,
               child: DrawerHeader(
-                  decoration: BoxDecoration(color: Colors.orange),
+                  decoration: BoxDecoration(color: Colors.brown),
                   padding: EdgeInsets.symmetric(vertical: 28, horizontal: 16),
                   child: Text(
                     "Olá, Gabriel Lindão",
@@ -113,32 +116,36 @@ class _CardapioPageState extends State<CardapioPage> {
                   color: const Color(0xFFfcfcfc),
                   child: Row(
                     children: [
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                produto['nome'],
+                                style: const TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.bold),
+                                textAlign: TextAlign.start,
+                              ),
+                              Text(produto['descricao'],
+                                  maxLines: 2, overflow: TextOverflow.ellipsis),
+                              const SizedBox(
+                                height: 30,
+                              ),
+                              Text(
+                                  'R\$ ${double.parse(produto['preco']).toStringAsFixed(2)}')
+                            ],
+                          ),
+                        ),
+                      ),
                       // vai ter uma imagem da internet, pois o campo 'imagem' do meu objeto servicos, contém um link da internet que manda para uma imagem
                       Image.network(
                         produto['imagem'],
-                        width: 80,
+                        width: 110,
                         height: 80,
                         fit: BoxFit.cover,
                       ),
-                      Expanded(
-                          child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Text(
-                              produto['nome'],
-                              style: const TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.bold),
-                              textAlign: TextAlign.start,
-                            ),
-                            Text(produto['descricao'],
-                                maxLines: 2, overflow: TextOverflow.ellipsis),
-                            Text(
-                                'R\$ ${double.parse(produto['preco']).toStringAsFixed(2)}')
-                          ],
-                        ),
-                      ))
                     ],
                   ),
                 );
