@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:menu_vizinho_mobile/produto_page.dart';
+
 class CardapioPage extends StatefulWidget {
   const CardapioPage({Key? key}) : super(key: key);
 
@@ -65,6 +67,7 @@ class _CardapioPageState extends State<CardapioPage> {
       ),
       // coloca as três barrinhas no canto superior esquerdo, permitindo um menu lateral (basicamente um menu lateral)
       drawer: Drawer(
+        backgroundColor: Color(0xfff9eed9),
         // child é um elemento filho de drawer
         // ListVIew é basicamente uma lista ul do html
         child: ListView(
@@ -140,51 +143,66 @@ class _CardapioPageState extends State<CardapioPage> {
                           itemCount: produtos.length,
                           itemBuilder: (context, prodIndex) {
                             final produto = produtos[prodIndex];
-                            return Card(
-                              margin: const EdgeInsets.all(8.0),
-                              child: Row(
-                                children: [
-                                  // Informações do Produto
-                                  Expanded(
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            produto['nome'],
-                                            style: const TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.bold,
+                            return GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        ProdutoPage(produto: produto),
+                                  ),
+                                );
+                              },
+                              child: Card(
+                                margin: const EdgeInsets.all(8.0),
+                                child: Row(
+                                  children: [
+                                    // Informações do Produto
+                                    Expanded(
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(15.0),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              produto['nome'],
+                                              style: const TextStyle(
+                                                  fontSize: 19,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Color(0xff8c6342)),
                                             ),
-                                          ),
-                                          Text(
-                                            produto['descricao'],
-                                            maxLines: 2,
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                          const SizedBox(height: 10),
-                                          Text(
-                                            'R\$ ${double.parse(produto['preco']).toStringAsFixed(2)}',
-                                            style: const TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.green,
+                                            Text(
+                                              produto['descricao'],
+                                              maxLines: 2,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: const TextStyle(
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Color(0xffacacac)),
                                             ),
-                                          ),
-                                        ],
+                                            const SizedBox(height: 20),
+                                            Text(
+                                              'R\$ ${double.parse(produto['preco']).toStringAsFixed(2)}',
+                                              style: const TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.bold,
+                                                color: Color(0xff8c6342),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  // Imagem do Produto
-                                  Image.network(
-                                    produto['imagem'],
-                                    width: 110,
-                                    height: 80,
-                                    fit: BoxFit.cover,
-                                  ),
-                                ],
+                                    // Imagem do Produto
+                                    Image.network(
+                                      produto['imagem'],
+                                      width: 110,
+                                      height: 80,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ],
+                                ),
                               ),
                             );
                           },
@@ -225,51 +243,66 @@ class _CardapioPageState extends State<CardapioPage> {
                           itemCount: produtos.length,
                           itemBuilder: (context, prodIndex) {
                             final produto = produtos[prodIndex];
-                            return Card(
-                              margin: const EdgeInsets.all(8.0),
-                              child: Row(
-                                children: [
-                                  // Informações do Produto
-                                  Expanded(
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            produto['nome'],
-                                            style: const TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.bold,
+                            return GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        ProdutoPage(produto: produto),
+                                  ),
+                                );
+                              },
+                              child: Card(
+                                margin: const EdgeInsets.all(8.0),
+                                child: Row(
+                                  children: [
+                                    // Informações do Produto
+                                    Expanded(
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(15.0),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              produto['nome'],
+                                              style: const TextStyle(
+                                                  fontSize: 19,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Color(0xff8c6342)),
                                             ),
-                                          ),
-                                          Text(
-                                            produto['descricao'],
-                                            maxLines: 2,
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                          const SizedBox(height: 10),
-                                          Text(
-                                            'R\$ ${double.parse(produto['preco']).toStringAsFixed(2)}',
-                                            style: const TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.green,
+                                            Text(
+                                              produto['descricao'],
+                                              maxLines: 2,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: const TextStyle(
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Color(0xffacacac)),
                                             ),
-                                          ),
-                                        ],
+                                            const SizedBox(height: 20),
+                                            Text(
+                                              'R\$ ${double.parse(produto['preco']).toStringAsFixed(2)}',
+                                              style: const TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.bold,
+                                                color: Color(0xff8c6342),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  // Imagem do Produto
-                                  Image.network(
-                                    produto['imagem'],
-                                    width: 110,
-                                    height: 80,
-                                    fit: BoxFit.cover,
-                                  ),
-                                ],
+                                    // Imagem do Produto
+                                    Image.network(
+                                      produto['imagem'],
+                                      width: 110,
+                                      height: 80,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ],
+                                ),
                               ),
                             );
                           },
