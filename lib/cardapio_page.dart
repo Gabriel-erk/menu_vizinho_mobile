@@ -14,7 +14,9 @@ class CardapioPage extends StatefulWidget {
 class _CardapioPageState extends State<CardapioPage> {
   List<dynamic> categorias = [];
   List<dynamic> subCategorias = [];
+  List<dynamic> banners = [];
   bool isLoading = true;
+  int _selectedIndex = 3; // Índice inicial do item selecionado (Cardápio)
 
   @override
   void initState() {
@@ -25,7 +27,8 @@ class _CardapioPageState extends State<CardapioPage> {
   Future<void> listaCardapio() async {
     try {
       final response =
-          await http.get(Uri.parse('http://10.56.45.27/public/api/cardapio'));
+          // await http.get(Uri.parse('http://10.56.45.27/public/api/cardapio'));
+          await http.get(Uri.parse('http://192.168.0.10/public/api/cardapio'));
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         setState(() {
@@ -41,6 +44,21 @@ class _CardapioPageState extends State<CardapioPage> {
     }
   }
 
+  Future<void> listaBanners() async {
+    try {
+      final response =
+          await http.get(Uri.parse('http://192.168.0.10/public/api/cardapio'));
+      if (response.statusCode == 200) {
+        setState(() {
+          banners = json.decode(response.body);
+          isLoading = false;
+        });
+      }
+    } catch (e) {
+      mostrarError('Erro: $e');
+    }
+  }
+
   void mostrarError(String mensagem) {
     ScaffoldMessenger.of(context)
         .showSnackBar(SnackBar(content: Text(mensagem)));
@@ -50,16 +68,19 @@ class _CardapioPageState extends State<CardapioPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Row(
+        title: const Row(
           // mainAxis é usado em Row (agrupa na horizontal, e é tipo o jusify content do flex)
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.end,
           children: [
             //logo no canto esquerdo
-            Image.asset(
-              'assets/bua3.png',
-              height: 40, // altura da logo
-            ),
-            const Icon(Icons.shopping_bag)
+            // Image.asset(
+            //   'assets/bua3.png',
+            //   height: 40, // altura da logo
+            // ),
+            Icon(
+              Icons.shopping_bag,
+              color: Color(0xfff9eed9),
+            )
           ],
         ),
         // definindo cor de fundo da appBar (basicamente a navbar daqui)
@@ -67,7 +88,6 @@ class _CardapioPageState extends State<CardapioPage> {
       ),
       // coloca as três barrinhas no canto superior esquerdo, permitindo um menu lateral (basicamente um menu lateral)
       drawer: Drawer(
-        backgroundColor: Color(0xfff9eed9),
         // child é um elemento filho de drawer
         // ListVIew é basicamente uma lista ul do html
         child: ListView(
@@ -313,6 +333,54 @@ class _CardapioPageState extends State<CardapioPage> {
                 ),
               ],
             ),
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        backgroundColor: const Color(0xff8c6342),
+        selectedItemColor: Colors.white, // Cor do item selecionado
+        unselectedItemColor: Colors.white70, // Cor dos itens não selecionados
+        currentIndex: _selectedIndex, // Índice do item selecionado
+        onTap: (index) {
+          setState(() {
+            _selectedIndex = index;
+          });
+
+          // Ação para cada item
+          switch (index) {
+            case 0:
+              print('Home');
+              break;
+            case 1:
+              print('Ofertas');
+              break;
+            case 2:
+              print('Cupons');
+              break;
+            case 3:
+              print('Cardápio');
+              break;
+            default:
+              break;
+          }
+        },
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.local_offer),
+            label: 'Ofertas',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.card_giftcard),
+            label: 'Cupons',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.menu_book),
+            label: 'Cardápio',
+          ),
+        ],
+      ),
     );
   }
 }
