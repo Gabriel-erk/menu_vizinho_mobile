@@ -27,8 +27,8 @@ class _CardapioPageState extends State<CardapioPage> {
   Future<void> listaCardapio() async {
     try {
       final response =
-          // await http.get(Uri.parse('http://10.56.45.27/public/api/cardapio'));
-          await http.get(Uri.parse('http://192.168.0.10/public/api/cardapio'));
+          await http.get(Uri.parse('http://10.56.45.27/public/api/cardapio'));
+      // await http.get(Uri.parse('http://192.168.0.10/public/api/cardapio'));
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         setState(() {
@@ -72,11 +72,6 @@ class _CardapioPageState extends State<CardapioPage> {
           // mainAxis é usado em Row (agrupa na horizontal, e é tipo o jusify content do flex)
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            //logo no canto esquerdo
-            // Image.asset(
-            //   'assets/bua3.png',
-            //   height: 40, // altura da logo
-            // ),
             Icon(
               Icons.shopping_bag,
               color: Color(0xfff9eed9),
@@ -97,11 +92,14 @@ class _CardapioPageState extends State<CardapioPage> {
             SizedBox(
               height: 100,
               child: DrawerHeader(
-                  decoration: BoxDecoration(color: Colors.brown),
+                  decoration: BoxDecoration(color: Color(0xff8c6342)),
                   padding: EdgeInsets.symmetric(vertical: 28, horizontal: 16),
                   child: Text(
                     "Olá, Gabriel Lindão",
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xfff9eed9)),
                   )),
             ),
             // listTitle para tópico de lista
@@ -113,17 +111,17 @@ class _CardapioPageState extends State<CardapioPage> {
               title: Text("Login"),
             ),
             ListTile(
-              leading: Icon(Icons.list),
-              title: Text("Serviços"),
+              leading: Icon(Icons.app_registration),
+              title: Text("Cadastrar"),
             ),
             ListTile(
-              leading: Icon(Icons.help),
-              title: Text("Dúvidas"),
+              leading: Icon(Icons.feedback),
+              title: Text("FeedBacks"),
             ),
             Divider(),
             ListTile(
               leading: Icon(Icons.info),
-              title: Text("Sobre o BookMeNow"),
+              title: Text("Sobre  o Mr.Burger"),
             ),
           ],
         ),
@@ -150,6 +148,7 @@ class _CardapioPageState extends State<CardapioPage> {
                           child: Text(
                             categoria['titulo_categoria'],
                             style: const TextStyle(
+                              fontFamily: 'Poppins',
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
                               color: Color(0xff8c6342),
@@ -188,8 +187,9 @@ class _CardapioPageState extends State<CardapioPage> {
                                             Text(
                                               produto['nome'],
                                               style: const TextStyle(
-                                                  fontSize: 19,
-                                                  fontWeight: FontWeight.bold,
+                                                  fontFamily: 'Poppins',
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.w600,
                                                   color: Color(0xff8c6342)),
                                             ),
                                             Text(
@@ -197,7 +197,8 @@ class _CardapioPageState extends State<CardapioPage> {
                                               maxLines: 2,
                                               overflow: TextOverflow.ellipsis,
                                               style: const TextStyle(
-                                                  fontSize: 12,
+                                                  fontFamily: 'Poppins',
+                                                  fontSize: 13,
                                                   fontWeight: FontWeight.bold,
                                                   color: Color(0xffacacac)),
                                             ),
@@ -205,8 +206,9 @@ class _CardapioPageState extends State<CardapioPage> {
                                             Text(
                                               'R\$ ${double.parse(produto['preco']).toStringAsFixed(2)}',
                                               style: const TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.bold,
+                                                fontFamily: 'Poppins',
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.w600,
                                                 color: Color(0xff8c6342),
                                               ),
                                             ),
@@ -215,11 +217,15 @@ class _CardapioPageState extends State<CardapioPage> {
                                       ),
                                     ),
                                     // Imagem do Produto
-                                    Image.network(
-                                      produto['imagem'],
-                                      width: 110,
-                                      height: 80,
-                                      fit: BoxFit.cover,
+                                    Padding(
+                                      padding:
+                                          const EdgeInsets.only(right: 10.0),
+                                      child: Image.network(
+                                        produto['imagem'],
+                                        width: 115,
+                                        height: 80,
+                                        fit: BoxFit.cover,
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -250,6 +256,7 @@ class _CardapioPageState extends State<CardapioPage> {
                           child: Text(
                             subCategoria['titulo_sub_categoria'],
                             style: const TextStyle(
+                              fontFamily: 'Poppins',
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
                               color: Color(0xff8c6342),
@@ -288,8 +295,9 @@ class _CardapioPageState extends State<CardapioPage> {
                                             Text(
                                               produto['nome'],
                                               style: const TextStyle(
-                                                  fontSize: 19,
-                                                  fontWeight: FontWeight.bold,
+                                                  fontFamily: 'Poppins',
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.w600,
                                                   color: Color(0xff8c6342)),
                                             ),
                                             Text(
@@ -297,16 +305,18 @@ class _CardapioPageState extends State<CardapioPage> {
                                               maxLines: 2,
                                               overflow: TextOverflow.ellipsis,
                                               style: const TextStyle(
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.bold,
+                                                  fontFamily: 'Poppins',
+                                                  fontSize: 13,
+                                                  fontWeight: FontWeight.w600,
                                                   color: Color(0xffacacac)),
                                             ),
                                             const SizedBox(height: 20),
                                             Text(
                                               'R\$ ${double.parse(produto['preco']).toStringAsFixed(2)}',
                                               style: const TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.bold,
+                                                fontFamily: 'Poppins',
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.w600,
                                                 color: Color(0xff8c6342),
                                               ),
                                             ),
@@ -315,11 +325,15 @@ class _CardapioPageState extends State<CardapioPage> {
                                       ),
                                     ),
                                     // Imagem do Produto
-                                    Image.network(
-                                      produto['imagem'],
-                                      width: 110,
-                                      height: 80,
-                                      fit: BoxFit.cover,
+                                    Padding(
+                                      padding:
+                                          const EdgeInsets.only(right: 10.0),
+                                      child: Image.network(
+                                        produto['imagem'],
+                                        width: 115,
+                                        height: 80,
+                                        fit: BoxFit.cover,
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -356,7 +370,16 @@ class _CardapioPageState extends State<CardapioPage> {
               print('Cupons');
               break;
             case 3:
-              print('Cardápio');
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const CardapioPage(),
+                    ),
+                  );
+                },
+              );
               break;
             default:
               break;
