@@ -173,7 +173,14 @@ class _CardapioPageState extends State<CardapioPage> {
                                 );
                               },
                               child: Card(
-                                margin: const EdgeInsets.all(8.0),
+                                // alterando o shape para para ter bordas arredondadas
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(
+                                      15), // Bordas arredondadas
+                                ),
+                                elevation:
+                                    5, // Elevação para sombra (cria uma sombra)
+                                margin: const EdgeInsets.all(10.0),
                                 child: Row(
                                   children: [
                                     // Informações do Produto
@@ -187,30 +194,50 @@ class _CardapioPageState extends State<CardapioPage> {
                                             Text(
                                               produto['nome'],
                                               style: const TextStyle(
-                                                  fontFamily: 'Poppins',
-                                                  fontSize: 20,
-                                                  fontWeight: FontWeight.w600,
-                                                  color: Color(0xff8c6342)),
+                                                fontFamily: 'Poppins',
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.w600,
+                                                color: Color(0xff8c6342),
+                                              ),
                                             ),
+                                            const SizedBox(height: 8),
                                             Text(
                                               produto['descricao'],
                                               maxLines: 2,
                                               overflow: TextOverflow.ellipsis,
                                               style: const TextStyle(
-                                                  fontFamily: 'Poppins',
-                                                  fontSize: 13,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Color(0xffacacac)),
-                                            ),
-                                            const SizedBox(height: 20),
-                                            Text(
-                                              'R\$ ${double.parse(produto['preco']).toStringAsFixed(2)}',
-                                              style: const TextStyle(
                                                 fontFamily: 'Poppins',
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.w600,
-                                                color: Color(0xff8c6342),
+                                                fontSize: 13,
+                                                fontWeight: FontWeight.bold,
+                                                color: Color(0xffacacac),
                                               ),
+                                            ),
+                                            const SizedBox(height: 15),
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Text(
+                                                  'R\$ ${double.parse(produto['preco']).toStringAsFixed(2)}',
+                                                  style: const TextStyle(
+                                                    fontFamily: 'Poppins',
+                                                    fontSize: 15,
+                                                    fontWeight: FontWeight.w600,
+                                                    color: Color(0xff8c6342),
+                                                  ),
+                                                ),
+                                                // Ícone de adicionar ao carrinho
+                                                IconButton(
+                                                  icon: const Icon(
+                                                      Icons
+                                                          .shopping_cart_outlined,
+                                                      color: Color(0xff8c6342)),
+                                                  onPressed: () {
+                                                    // Ação do botão
+                                                  },
+                                                ),
+                                              ],
                                             ),
                                           ],
                                         ),
@@ -222,8 +249,8 @@ class _CardapioPageState extends State<CardapioPage> {
                                           const EdgeInsets.only(right: 10.0),
                                       child: Image.network(
                                         produto['imagem'],
-                                        width: 115,
-                                        height: 80,
+                                        width: 150,
+                                        height: 100,
                                         fit: BoxFit.cover,
                                       ),
                                     ),
@@ -281,7 +308,12 @@ class _CardapioPageState extends State<CardapioPage> {
                                 );
                               },
                               child: Card(
-                                margin: const EdgeInsets.all(8.0),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(
+                                      15), // Bordas arredondadas
+                                ),
+                                elevation: 5, // Elevação para sombra
+                                margin: const EdgeInsets.all(10.0),
                                 child: Row(
                                   children: [
                                     // Informações do Produto
@@ -295,30 +327,50 @@ class _CardapioPageState extends State<CardapioPage> {
                                             Text(
                                               produto['nome'],
                                               style: const TextStyle(
-                                                  fontFamily: 'Poppins',
-                                                  fontSize: 20,
-                                                  fontWeight: FontWeight.w600,
-                                                  color: Color(0xff8c6342)),
+                                                fontFamily: 'Poppins',
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.w600,
+                                                color: Color(0xff8c6342),
+                                              ),
                                             ),
+                                            const SizedBox(height: 8),
                                             Text(
                                               produto['descricao'],
                                               maxLines: 2,
                                               overflow: TextOverflow.ellipsis,
                                               style: const TextStyle(
-                                                  fontFamily: 'Poppins',
-                                                  fontSize: 13,
-                                                  fontWeight: FontWeight.w600,
-                                                  color: Color(0xffacacac)),
-                                            ),
-                                            const SizedBox(height: 20),
-                                            Text(
-                                              'R\$ ${double.parse(produto['preco']).toStringAsFixed(2)}',
-                                              style: const TextStyle(
                                                 fontFamily: 'Poppins',
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.w600,
-                                                color: Color(0xff8c6342),
+                                                fontSize: 13,
+                                                fontWeight: FontWeight.bold,
+                                                color: Color(0xffacacac),
                                               ),
+                                            ),
+                                            const SizedBox(height: 15),
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Text(
+                                                  'R\$ ${double.parse(produto['preco']).toStringAsFixed(2)}',
+                                                  style: const TextStyle(
+                                                    fontFamily: 'Poppins',
+                                                    fontSize: 15,
+                                                    fontWeight: FontWeight.w600,
+                                                    color: Color(0xff8c6342),
+                                                  ),
+                                                ),
+                                                // Ícone de adicionar ao carrinho
+                                                IconButton(
+                                                  icon: const Icon(
+                                                      Icons
+                                                          .shopping_cart_outlined,
+                                                      color: Color(0xff8c6342)),
+                                                  onPressed: () {
+                                                    // Ação do botão
+                                                  },
+                                                ),
+                                              ],
                                             ),
                                           ],
                                         ),
@@ -328,11 +380,15 @@ class _CardapioPageState extends State<CardapioPage> {
                                     Padding(
                                       padding:
                                           const EdgeInsets.only(right: 10.0),
-                                      child: Image.network(
-                                        produto['imagem'],
-                                        width: 115,
-                                        height: 80,
-                                        fit: BoxFit.cover,
+                                      child: ClipRRect(
+                                        // borderRadius: BorderRadius.circular(
+                                        //     10), // Borda arredondada na imagem
+                                        child: Image.network(
+                                          produto['imagem'],
+                                          width: 150,
+                                          height: 100,
+                                          fit: BoxFit.cover,
+                                        ),
                                       ),
                                     ),
                                   ],
