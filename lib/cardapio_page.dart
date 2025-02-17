@@ -16,6 +16,28 @@ class _CardapioPageState extends State<CardapioPage> {
   List<dynamic> subCategorias = [];
   List<dynamic> banners = [];
 
+// Controlador de rolagem
+// tentar colocar  final   ScrollController _scrollController = ScrollController(); caso de algum erro
+  ScrollController _scrollController = ScrollController();
+
+  // Função para rolar até a parte específica
+  void scrollToCategory(int index) {
+    double position = 0;
+
+    // Defina uma posição diferente para cada categoria, baseada no índice ou no nome
+    if (index == 0) {
+      position = 0; // Primeira categoria
+    } else if (index == 1) {
+      position = 300; // Segunda categoria
+    } else if (index == 2) {
+      position = 600; // Terceira categoria
+    } else {
+      position = 900; // Outras categorias
+    }
+
+    _scrollController.animateTo(position,
+        duration: Duration(seconds: 1), curve: Curves.easeInOut);
+  }
 
   bool isLoading = true;
   int _selectedIndex = 3; // Índice inicial do item selecionado (Cardápio)
@@ -24,6 +46,7 @@ class _CardapioPageState extends State<CardapioPage> {
   void initState() {
     super.initState();
     listaCardapio();
+    _scrollController = ScrollController();
   }
 
   Future<void> listaCardapio() async {
@@ -120,6 +143,7 @@ class _CardapioPageState extends State<CardapioPage> {
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
           : ListView(
+              controller: _scrollController, // Associe o controller aqui
               children: [
                 // Listar Categorias e Subcategorias no topo
                 Padding(
@@ -130,12 +154,13 @@ class _CardapioPageState extends State<CardapioPage> {
                       children: [
                         // Exibe as Categorias
                         ...categorias.map((categoria) {
+                          int index = categorias.indexOf(categoria);
                           return Padding(
                             padding:
                                 const EdgeInsets.symmetric(horizontal: 8.0),
                             child: ElevatedButton(
                               onPressed: () {
-                                // Ação para exibir produtos da categoria
+                                scrollToCategory(index);
                               },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Color(0xff8c6342),
@@ -154,12 +179,13 @@ class _CardapioPageState extends State<CardapioPage> {
                         }).toList(),
                         // Exibe as Subcategorias
                         ...subCategorias.map((subCategoria) {
+                          int index = subCategorias.indexOf(subCategoria);
                           return Padding(
                             padding:
                                 const EdgeInsets.symmetric(horizontal: 8.0),
                             child: ElevatedButton(
                               onPressed: () {
-                                // Ação para exibir produtos da subcategoria
+                                scrollToCategory(index);
                               },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Color(0xff8c6342),
