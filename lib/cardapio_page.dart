@@ -15,6 +15,8 @@ class _CardapioPageState extends State<CardapioPage> {
   List<dynamic> categorias = [];
   List<dynamic> subCategorias = [];
   List<dynamic> banners = [];
+
+
   bool isLoading = true;
   int _selectedIndex = 3; // Índice inicial do item selecionado (Cardápio)
 
@@ -195,6 +197,132 @@ class _CardapioPageState extends State<CardapioPage> {
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
                             categoria['titulo_categoria'],
+                            style: const TextStyle(
+                              fontFamily: 'Poppins',
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xff8c6342),
+                            ),
+                          ),
+                        ),
+                        ListView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: produtos.length,
+                          itemBuilder: (context, prodIndex) {
+                            final produto = produtos[prodIndex];
+                            return GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        ProdutoPage(produto: produto),
+                                  ),
+                                );
+                              },
+                              child: Card(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                elevation: 5,
+                                margin: const EdgeInsets.all(10.0),
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(15.0),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              produto['nome'],
+                                              style: const TextStyle(
+                                                fontFamily: 'Poppins',
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.w600,
+                                                color: Color(0xff8c6342),
+                                              ),
+                                            ),
+                                            const SizedBox(height: 8),
+                                            Text(
+                                              produto['descricao'],
+                                              maxLines: 2,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: const TextStyle(
+                                                fontFamily: 'Poppins',
+                                                fontSize: 13,
+                                                fontWeight: FontWeight.bold,
+                                                color: Color(0xffacacac),
+                                              ),
+                                            ),
+                                            const SizedBox(height: 15),
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Text(
+                                                  'R\$ ${double.parse(produto['preco']).toStringAsFixed(2)}',
+                                                  style: const TextStyle(
+                                                    fontFamily: 'Poppins',
+                                                    fontSize: 15,
+                                                    fontWeight: FontWeight.w600,
+                                                    color: Color(0xff8c6342),
+                                                  ),
+                                                ),
+                                                IconButton(
+                                                  icon: const Icon(
+                                                      Icons
+                                                          .shopping_cart_outlined,
+                                                      color: Color(0xff8c6342)),
+                                                  onPressed: () {
+                                                    // Ação do botão
+                                                  },
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding:
+                                          const EdgeInsets.only(right: 10.0),
+                                      child: Image.network(
+                                        produto['imagem'],
+                                        width: 150,
+                                        height: 100,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ],
+                    );
+                  },
+                ),
+                // Listar Sub categorias
+                ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: categorias.length,
+                  itemBuilder: (context, index) {
+                    final subCategoria = subCategorias[index];
+                    final produtos = subCategoria['produtos'];
+
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            subCategoria['titulo_sub_categoria'],
                             style: const TextStyle(
                               fontFamily: 'Poppins',
                               fontSize: 20,
