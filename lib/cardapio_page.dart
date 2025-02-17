@@ -21,18 +21,16 @@ class _CardapioPageState extends State<CardapioPage> {
   ScrollController _scrollController = ScrollController();
 
   // Função para rolar até a parte específica
-  void scrollToCategory(int index) {
+  void scrollToCategory(int index, String tipo) {
     double position = 0;
 
-    // Defina uma posição diferente para cada categoria, baseada no índice ou no nome
-    if (index == 0) {
-      position = 0; // Primeira categoria
-    } else if (index == 1) {
-      position = 300; // Segunda categoria
-    } else if (index == 2) {
-      position = 600; // Terceira categoria
-    } else {
-      position = 900; // Outras categorias
+    // Ajuste para categorias
+    if (tipo == "categoria") {
+      position = 100.0 * index; // Posição com base no índice da categoria
+    }
+    // Ajuste para subcategorias
+    else if (tipo == "subcategoria") {
+      position = 100.0 * index + 300.0; // Subcategorias começam após categorias
     }
 
     _scrollController.animateTo(position,
@@ -45,6 +43,7 @@ class _CardapioPageState extends State<CardapioPage> {
   @override
   void initState() {
     super.initState();
+    listaBanners(); // Carregar banners
     listaCardapio();
     _scrollController = ScrollController();
   }
@@ -145,6 +144,33 @@ class _CardapioPageState extends State<CardapioPage> {
           : ListView(
               controller: _scrollController, // Associe o controller aqui
               children: [
+                // Adicione os Banners aqui, logo antes das categorias e subcategorias
+                if (banners.isNotEmpty)
+                  Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: SizedBox(
+                      height: 150, // Altura dos banners
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: banners.length,
+                        itemBuilder: (context, index) {
+                          final banner = banners[index];
+                          return Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 8.0),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(15),
+                              child: Image.network(
+                                banner[0]['imagem'],
+                                width: 250, // Largura dos banners
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ),
                 // Listar Categorias e Subcategorias no topo
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10.0),
@@ -160,7 +186,7 @@ class _CardapioPageState extends State<CardapioPage> {
                                 const EdgeInsets.symmetric(horizontal: 8.0),
                             child: ElevatedButton(
                               onPressed: () {
-                                scrollToCategory(index);
+                                scrollToCategory(index, "categoria");
                               },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Color(0xff8c6342),
@@ -185,7 +211,7 @@ class _CardapioPageState extends State<CardapioPage> {
                                 const EdgeInsets.symmetric(horizontal: 8.0),
                             child: ElevatedButton(
                               onPressed: () {
-                                scrollToCategory(index);
+                                scrollToCategory(index, "subcategoria");
                               },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Color(0xff8c6342),
