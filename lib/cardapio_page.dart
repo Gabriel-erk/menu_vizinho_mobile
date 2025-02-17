@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+// biblioteca para carrosel
+import 'package:carousel_slider/carousel_slider.dart';
 
 import 'package:menu_vizinho_mobile/produto_page.dart';
 
@@ -144,27 +146,21 @@ class _CardapioPageState extends State<CardapioPage> {
           : ListView(
               controller: _scrollController, // Associe o controller aqui
               children: [
-                // Adicione os Banners aqui, logo antes das categorias e subcategorias
+                // Carrossel de banners
                 if (banners.isNotEmpty)
                   Padding(
                     padding: const EdgeInsets.all(10.0),
                     child: SizedBox(
-                      height: 150, // Altura dos banners
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
+                      height: 200, // Ajuste a altura do carrossel
+                      child: PageView.builder(
                         itemCount: banners.length,
                         itemBuilder: (context, index) {
                           final banner = banners[index];
-                          return Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 8.0),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(15),
-                              child: Image.network(
-                                banner[0]['imagem'],
-                                width: 250, // Largura dos banners
-                                fit: BoxFit.cover,
-                              ),
+                          return ClipRRect(
+                            borderRadius: BorderRadius.circular(15),
+                            child: Image.network(
+                              banner[0]['imagem']!,
+                              fit: BoxFit.cover,
                             ),
                           );
                         },
