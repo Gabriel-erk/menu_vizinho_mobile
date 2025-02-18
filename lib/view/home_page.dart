@@ -163,165 +163,227 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                 // restante aqui
-               Padding(
-  padding: const EdgeInsets.all(10.0),
-  child: Column(
-    crossAxisAlignment: CrossAxisAlignment.center,
-    children: [
-      // Seção Ofertas Especiais
-      Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: const [
-          Icon(Icons.local_offer, color: Color(0xff8c6342)),
-          SizedBox(width: 8),
-          Text(
-            "Ofertas Especiais",
-            style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Color(0xff8c6342)),
-          ),
-        ],
-      ),
-      SizedBox(
-        height: 180,
-        child: Center(
-          child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            itemCount: (produtos.length > 2) ? 2 : produtos.length, 
-            itemBuilder: (context, index) {
-              final produto = produtos[index];
-              return Container(
-                width: 160,
-                margin: const EdgeInsets.symmetric(horizontal: 10),
-                decoration: BoxDecoration(
-                  color: Color(0xfff9eed9),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Image.network(
-                      produto['imagem'],
-                      height: 110,
-                      width: 130,
-                      fit: BoxFit.cover,
-                    ),
-                    Text(
-                      produto['nome'],
-                      style: const TextStyle(fontWeight: FontWeight.bold, color: Color(0xff8c6342)),
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
-                ),
-              );
-            },
-          ),
-        ),
-      ),
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      // Seção Ofertas Especiais
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: const [
+                          Icon(Icons.local_offer, color: Color(0xff8c6342)),
+                          SizedBox(width: 8),
+                          Text(
+                            "Ofertas Especiais",
+                            style: TextStyle(
+                                fontSize: 22,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xff8c6342)),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 200,
+                        child: Center(
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount:
+                                (produtos.length > 2) ? 2 : produtos.length,
+                            itemBuilder: (context, index) {
+                              final produto = produtos[index];
+                              return Container(
+                                width: 160,
+                                margin:
+                                    const EdgeInsets.symmetric(horizontal: 10),
+                                decoration: BoxDecoration(
+                                  color: Color(0xfff9eed9),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(10),
+                                      child: Image.network(
+                                        produto['imagem'],
+                                        // height: 120,
+                                        // width: 140,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                    SizedBox(height: 5),
+                                    Text(
+                                      produto['nome'],
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Color(0xff8c6342)),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    Text(
+                                      "R\$ ${double.parse(produto['preco']).toStringAsFixed(2)}",
+                                      style: const TextStyle(
+                                          color: Color(0xff8c6342),
+                                          fontSize: 14),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      ),
 
-      const SizedBox(height: 20),
+                      const SizedBox(height: 20),
 
-      // Seção Pratos Populares
-      Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: const [
-          Icon(Icons.restaurant, color: Color(0xff8c6342)),
-          SizedBox(width: 8),
-          Text(
-            "Pratos Populares",
-            style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Color(0xff8c6342)),
-          ),
-        ],
-      ),
-      SizedBox(
-        height: 180,
-        child: Center(
-          child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            itemCount: (produtos.length > 4) ? 4 : produtos.length,
-            itemBuilder: (context, index) {
-              final produto = produtos[(index + 2) % produtos.length]; 
-              return Container(
-                width: 160,
-                margin: const EdgeInsets.symmetric(horizontal: 10),
-                decoration: BoxDecoration(
-                  color: Color(0xfff9eed9),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Image.network(
-                      produto['imagem'],
-                      height: 110,
-                      width: 130,
-                      fit: BoxFit.cover,
-                    ),
-                    Text(
-                      produto['nome'],
-                      style: const TextStyle(fontWeight: FontWeight.bold, color: Color(0xff8c6342)),
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
-                ),
-              );
-            },
-          ),
-        ),
-      ),
+                      // Seção Pratos Populares
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: const [
+                          Icon(Icons.restaurant, color: Color(0xff8c6342)),
+                          SizedBox(width: 8),
+                          Text(
+                            "Pratos Populares",
+                            style: TextStyle(
+                                fontSize: 22,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xff8c6342)),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 200,
+                        child: Center(
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount:
+                                (produtos.length > 4) ? 4 : produtos.length,
+                            itemBuilder: (context, index) {
+                              final produto =
+                                  produtos[(index + 2) % produtos.length];
+                              return Container(
+                                width: 160,
+                                margin:
+                                    const EdgeInsets.symmetric(horizontal: 10),
+                                decoration: BoxDecoration(
+                                  color: Color(0xfff9eed9),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(10),
+                                      child: Image.network(
+                                        produto['imagem'],
+                                        // height: 120,
+                                        // width: 140,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                    SizedBox(height: 5),
+                                    Text(
+                                      produto['nome'],
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Color(0xff8c6342)),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    Text(
+                                      "R\$ ${double.parse(produto['preco']).toStringAsFixed(2)}",
+                                      style: const TextStyle(
+                                          color: Color(0xff8c6342),
+                                          fontSize: 14),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      ),
 
-      const SizedBox(height: 20),
+                      const SizedBox(height: 20),
 
-      // Seção Sugestões
-      Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: const [
-          Icon(Icons.thumb_up, color: Color(0xff8c6342)),
-          SizedBox(width: 8),
-          Text(
-            "Sugestões",
-            style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Color(0xff8c6342)),
-          ),
-        ],
-      ),
-      SizedBox(
-        height: 180,
-        child: Center(
-          child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            itemCount: (produtos.length > 4) ? 4 : produtos.length,
-            itemBuilder: (context, index) {
-              final produto = produtos[(index + 3) % produtos.length]; 
-              return Container(
-                width: 160,
-                margin: const EdgeInsets.symmetric(horizontal: 10),
-                decoration: BoxDecoration(
-                  color: Color(0xfff9eed9),
-                  borderRadius: BorderRadius.circular(12),
+                      // Seção Sugestões
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: const [
+                          Icon(Icons.thumb_up, color: Color(0xff8c6342)),
+                          SizedBox(width: 8),
+                          Text(
+                            "Sugestões",
+                            style: TextStyle(
+                                fontSize: 22,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xff8c6342)),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 220,
+                        child: Center(
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount:
+                                (produtos.length > 4) ? 4 : produtos.length,
+                            itemBuilder: (context, index) {
+                              final produto =
+                                  produtos[(index + 3) % produtos.length];
+                              return Container(
+                                width: 180,
+                                margin:
+                                    const EdgeInsets.symmetric(horizontal: 10),
+                                padding: const EdgeInsets.all(8),
+                                decoration: BoxDecoration(
+                                  color: Color(0xfff9eed9),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(10),
+                                      child: Image.network(
+                                        produto['imagem'],
+                                        // height: 110,
+                                        // width: 160,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                    SizedBox(height: 5),
+                                    Text(
+                                      produto['nome'],
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Color(0xff8c6342)),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    Text(
+                                      "R\$ ${double.parse(produto['preco']).toStringAsFixed(2)}",
+                                      style: const TextStyle(
+                                          color: Color(0xff8c6342),
+                                          fontSize: 14),
+                                    ),
+                                    Text(
+                                      produto['descricao'].length > 50
+                                          ? "${produto['descricao'].substring(0, 50)}..."
+                                          : produto['descricao'],
+                                      style: const TextStyle(
+                                          color: Color(0xff8c6342),
+                                          fontSize: 12),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Image.network(
-                      produto['imagem'],
-                      height: 110,
-                      width: 130,
-                      fit: BoxFit.cover,
-                    ),
-                    Text(
-                      produto['nome'],
-                      style: const TextStyle(fontWeight: FontWeight.bold, color: Color(0xff8c6342)),
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
-                ),
-              );
-            },
-          ),
-        ),
-      ),
-    ],
-  ),
-),
-
               ],
             ),
       bottomNavigationBar: BottomNavigationBar(
