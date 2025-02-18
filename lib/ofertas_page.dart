@@ -4,6 +4,7 @@ import 'dart:convert';
 // biblioteca para carrosel
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:menu_vizinho_mobile/cardapio_page.dart';
+import 'package:menu_vizinho_mobile/oferta_page.dart';
 
 import 'package:menu_vizinho_mobile/produto_page.dart';
 
@@ -206,7 +207,7 @@ class _OfertasPageState extends State<OfertasPage> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) =>
-                                        ProdutoPage(produto: produto),
+                                        OfertaPage(produto: produto),
                                   ),
                                 );
                               },

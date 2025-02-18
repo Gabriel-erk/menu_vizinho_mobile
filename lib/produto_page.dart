@@ -20,172 +20,177 @@ class ProdutoPage extends StatelessWidget {
         ),
         backgroundColor: const Color(0xff8c6342),
       ),
-      body: Column(
-        children: [
-          // Imagem com fundo colorido
-          Container(
-            height: 310,
-            width: double.infinity,
-            color: const Color(0xfff9eed9), // Cor de fundo da imagem
-            child: Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: Image.network(
-                produto['imagem'],
-                fit: BoxFit.contain, // Ajusta a imagem dentro do container
+      body: SingleChildScrollView(
+        // Torna a página rolável
+        child: Column(
+          children: [
+            // Imagem com fundo colorido e bordas arredondadas
+            Container(
+              height: 310,
+              width: double.infinity,
+              color: const Color(0xfff9eed9),
+              child: Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: ClipRRect(
+                  // Borda arredondada na imagem
+                  borderRadius: BorderRadius.circular(15),
+                  child: Image.network(
+                    produto['imagem'],
+                    fit: BoxFit.cover, // Ajusta melhor a imagem
+                  ),
+                ),
               ),
             ),
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10.0),
-            child: Column(
-              crossAxisAlignment:
-                  CrossAxisAlignment.start, // Alinha texto à esquerda
-              children: [
-                // envolvendo em uma row para deixa-los lado a lado
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      produto['nome'],
+            const SizedBox(height: 20),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                  horizontal: 15.0), // Aumenta a margem
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        produto['nome'],
+                        style: const TextStyle(
+                          fontFamily: 'Poppins',
+                          fontSize: 27,
+                          fontWeight: FontWeight.w600,
+                          color: Color(0xff8c6342),
+                        ),
+                      ),
+                      Text(
+                        'R\$ ${double.parse(produto['preco']).toStringAsFixed(2)}',
+                        style: const TextStyle(
+                          fontFamily: 'Poppins',
+                          fontSize: 24,
+                          fontWeight: FontWeight.w600,
+                          color: Color(0xff8c6342),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 5),
+                  SizedBox(
+                    width: double.infinity, // Ajusta até a borda
+                    child: Text(
+                      produto['descricao'],
+                      maxLines: 3,
+                      overflow: TextOverflow.ellipsis,
                       style: const TextStyle(
                         fontFamily: 'Poppins',
-                        fontSize: 27,
-                        fontWeight: FontWeight.w600,
-                        color: Color(0xff8c6342),
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400,
+                        color: Color(0xffacacac),
                       ),
                     ),
-                    Text(
-                      'R\$ ${double.parse(produto['preco']).toStringAsFixed(2)}',
-                      style: const TextStyle(
-                        fontFamily: 'Poppins',
-                        fontSize: 25,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    )
-                  ],
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 20),
+
+            // Seção de Informações Nutricionais
+            ExpansionTile(
+              title: const Text(
+                "Informações Nutricionais",
+                style: TextStyle(
+                  fontFamily: 'Poppins',
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                  color: Color(0xff8c6342),
                 ),
-                const SizedBox(height: 5), // Espaço entre nome e descrição
-                // colocando dentro de um sizedbox para limitar até aonde vai se expandir o texto, não quero que fique até a outra borda do celular
-                SizedBox(
-                  width: 270, // Defiindo até aonde vai se expandir
+              ),
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
                   child: Text(
-                    produto['descricao'],
-                    maxLines: 3,
-                    overflow: TextOverflow.ellipsis,
+                    produto['info_nutricional'],
                     style: const TextStyle(
                       fontFamily: 'Poppins',
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      color: Color(0xffacacac),
+                      fontSize: 15,
+                      color: Color(0xff7c7c7c),
                     ),
                   ),
                 ),
               ],
             ),
-          ),
-          Column(
-            children: [
-              const Divider(),
-              // vai servir para quando clicar em "informações nutricionais" descer uma "div" com as informações nutricionais do meu produto, leading, coloca um icone de '+' ao lado esquerdo do texto 'informações nutricionais e children é o conteúdo da "div" que vai descer
-              ExpansionTile(
-                title: const Text(
-                  "Informações Nutricionais",
-                  style: TextStyle(
-                    fontFamily: 'Poppins',
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                    color: Color(0xff8c6342),
+
+            const SizedBox(height: 10),
+
+            // Seção de Adicionais
+            ExpansionTile(
+              title: const Text(
+                "Adicionais - Escolha até 5 opções",
+                style: TextStyle(
+                  fontFamily: 'Poppins',
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                  color: Color(0xff8c6342),
+                ),
+              ),
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    children: [
+                      ListTile(
+                        leading: const Icon(Icons.check_circle,
+                            color: Color(0xff8c6342)),
+                        title: const Text("Adicional 1"),
+                      ),
+                      ListTile(
+                        leading: const Icon(Icons.check_circle,
+                            color: Color(0xff8c6342)),
+                        title: const Text("Adicional 2"),
+                      ),
+                      ListTile(
+                        leading: const Icon(Icons.check_circle,
+                            color: Color(0xff8c6342)),
+                        title: const Text("Adicional 3"),
+                      ),
+                    ],
                   ),
                 ),
-                // leading: const Icon(Icons.add,
-                //     color: Color(0xff8c6342)),
+              ],
+            ),
+
+            const SizedBox(height: 40),
+
+            // Botão de Finalizar Compra
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      // crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          produto['info_nutricional'],
-                          style: const TextStyle(
-                              fontFamily: 'Poppins', fontSize: 15),
-                        ),
-                      ],
+                  ElevatedButton(
+                    onPressed: () {},
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xff8c6342),
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 30, vertical: 15),
+                      shape: RoundedRectangleBorder(
+                        // Borda arredondada no botão
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    child: const Text(
+                      'Finalizar compra',
+                      style: TextStyle(
+                        fontFamily: 'Poppins',
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ),
                 ],
               ),
-              const Divider(),
-            ],
-          ),
-          Column(
-            children: [
-              const Divider(),
-              // vai servir para quando clicar em "informações nutricionais" descer uma "div" com as informações nutricionais do meu produto, leading, coloca um icone de '+' ao lado esquerdo do texto 'informações nutricionais e children é o conteúdo da "div" que vai descer
-              ExpansionTile(
-                title: const Text(
-                  "Adicionais - Escolha até 5 opções",
-                  style: TextStyle(
-                    fontFamily: 'Poppins',
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                    color: Color(0xff8c6342),
-                  ),
-                ),
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Text(
-                              produto['info_nutricional'],
-                              style: const TextStyle(
-                                  fontFamily: 'Poppins', fontSize: 15),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              const Divider(),
-            ],
-          ),
-          const SizedBox(
-            height: 40,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ElevatedButton(
-                onPressed: () {},
-                // style para alterar o estilo do botão
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xff8c6342), // Cor de fundo
-                  foregroundColor: Colors.white, // Cor do texto e icones
-                  // adicionando o padding horizontal (x) e vertical (y)
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-                ),
-                child: const Text(
-                  'Finalizar compra',
-                  style: TextStyle(
-                    fontFamily: 'Poppins',
-                    fontSize: 20,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              )
-            ],
-          )
-        ],
+            ),
+            const SizedBox(height: 20),
+          ],
+        ),
       ),
     );
   }
