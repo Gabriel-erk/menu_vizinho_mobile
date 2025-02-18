@@ -136,21 +136,26 @@ class _CardapioPageState extends State<CardapioPage> {
                   )),
             ),
             ListTile(
-              leading: Icon(Icons.login),
-              title: Text("Login"),
+              leading: Icon(Icons.verified_user_rounded),
+              title: Text("Minha conta"),
             ),
             ListTile(
-              leading: Icon(Icons.app_registration),
-              title: Text("Cadastrar"),
-            ),
-            ListTile(
-              leading: Icon(Icons.feedback),
-              title: Text("FeedBacks"),
+              leading: Icon(Icons.cast_sharp),
+              title: Text("Meus pedidos"),
             ),
             Divider(),
             ListTile(
               leading: Icon(Icons.info),
-              title: Text("Sobre  o Mr.Burger"),
+              title: Text("Sobre o Mr.Burger"),
+            ),
+            ListTile(
+              leading: Icon(Icons.policy),
+              title: Text("Políticas do Mr.Burger"),
+            ),
+            Divider(),
+            ListTile(
+              leading: Icon(Icons.logout),
+              title: Text("Sair"),
             ),
           ],
         ),

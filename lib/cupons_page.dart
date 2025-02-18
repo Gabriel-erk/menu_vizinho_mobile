@@ -78,91 +78,98 @@ class _CuponsPageState extends State<CuponsPage> {
                   )),
             ),
             ListTile(
-              leading: Icon(Icons.login),
-              title: Text("Login"),
+              leading: Icon(Icons.verified_user_rounded),
+              title: Text("Minha conta"),
             ),
             ListTile(
-              leading: Icon(Icons.app_registration),
-              title: Text("Cadastrar"),
-            ),
-            ListTile(
-              leading: Icon(Icons.feedback),
-              title: Text("FeedBacks"),
+              leading: Icon(Icons.cast_sharp),
+              title: Text("Meus pedidos"),
             ),
             Divider(),
             ListTile(
               leading: Icon(Icons.info),
-              title: Text("Sobre  o Mr.Burger"),
+              title: Text("Sobre o Mr.Burger"),
+            ),
+            ListTile(
+              leading: Icon(Icons.policy),
+              title: Text("Políticas do Mr.Burger"),
+            ),
+            Divider(),
+            ListTile(
+              leading: Icon(Icons.logout),
+              title: Text("Sair"),
             ),
           ],
         ),
       ),
       body: isLoading
-    ? const Center(child: CircularProgressIndicator())
-    : cupons.isEmpty
-        ? const Center(child: Text('Você não possui cupons disponíveis'))
-        : ListView.builder(
-            itemCount: cupons.length,
-            itemBuilder: (context, index) {
-              final cupom = cupons[index];
-              return Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Card(
-                  elevation: 5,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  color: Colors.white,
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Image.asset('assets/images/cupom-carrinho.png', width: 60),
-                        const SizedBox(width: 16),
-                        Expanded(
-                          child: Column(
+          ? const Center(child: CircularProgressIndicator())
+          : cupons.isEmpty
+              ? const Center(child: Text('Você não possui cupons disponíveis'))
+              : ListView.builder(
+                  itemCount: cupons.length,
+                  itemBuilder: (context, index) {
+                    final cupom = cupons[index];
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Card(
+                        elevation: 5,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        color: Colors.white,
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                cupom[0]['nome_cupom'],
-                                style: const TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                    color: Color(0xff8c6342)),
+                              Image.asset('assets/images/cupom-carrinho.png',
+                                  width: 60),
+                              const SizedBox(width: 16),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      cupom[0]['nome_cupom'],
+                                      style: const TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                          color: Color(0xff8c6342)),
+                                    ),
+                                    const SizedBox(height: 8),
+                                    Text(cupom[0]['descricao_cupom']),
+                                  ],
+                                ),
                               ),
-                              const SizedBox(height: 8),
-                              Text(cupom[0]['descricao_cupom']),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  Text(
+                                    'Acaba em ${cupom[0]['horas_restantes']}h',
+                                    style: const TextStyle(color: Colors.grey),
+                                  ),
+                                  const SizedBox(height: 8),
+                                  TextButton(
+                                    onPressed: () {
+                                      // Navegação para a página de regras
+                                      Navigator.pushNamed(context, '/regras');
+                                    },
+                                    child: const Text(
+                                      'Regras',
+                                      style:
+                                          TextStyle(color: Color(0xff8c6342)),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ],
                           ),
                         ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Text(
-                              'Acaba em ${cupom[0]['horas_restantes']}h',
-                              style: const TextStyle(color: Colors.grey),
-                            ),
-                            const SizedBox(height: 8),
-                            TextButton(
-                              onPressed: () {
-                                // Navegação para a página de regras
-                                Navigator.pushNamed(context, '/regras');
-                              },
-                              child: const Text(
-                                'Regras',
-                                style: TextStyle(color: Color(0xff8c6342)),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
+                      ),
+                    );
+                  },
                 ),
-              );
-            },
-          ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         backgroundColor: const Color(0xff8c6342),
