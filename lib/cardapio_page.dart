@@ -17,6 +17,7 @@ class _CardapioPageState extends State<CardapioPage> {
   List<dynamic> categorias = [];
   List<dynamic> subCategorias = [];
   List<dynamic> banners = [];
+  List<dynamic> bannersFromApi = [];
 
 // Controlador de rolagem
 // tentar colocar  final   ScrollController _scrollController = ScrollController(); caso de algum erro
@@ -76,7 +77,18 @@ class _CardapioPageState extends State<CardapioPage> {
           await http.get(Uri.parse('http://192.168.0.5/public/api/banner'));
       if (response.statusCode == 200) {
         setState(() {
-          banners = json.decode(response.body);
+          // Decodificando a resposta JSON
+          bannersFromApi = json.decode(response.body);
+
+          // Acessando o primeiro item da lista principal
+          banners =
+              bannersFromApi[0]; // Aqui você acessa o primeiro array de banners
+
+          // Agora, você pode filtrar os banners por categoria 'cardapio'
+          banners = banners
+              .where((banner) => banner['categoria'] == 'cardapio')
+              .toList();
+
           isLoading = false;
         });
       }
@@ -146,27 +158,36 @@ class _CardapioPageState extends State<CardapioPage> {
           : ListView(
               controller: _scrollController, // Associe o controller aqui
               children: [
-                // Carrossel de banners
+                // Carrossel de banners com a biblioteca carousel_slider
                 if (banners.isNotEmpty)
                   Padding(
                     padding: const EdgeInsets.all(10.0),
-                    child: SizedBox(
-                      height: 200, // Ajuste a altura do carrossel
-                      child: PageView.builder(
-                        itemCount: banners.length,
-                        itemBuilder: (context, index) {
-                          final banner = banners[index];
-                          return ClipRRect(
-                            borderRadius: BorderRadius.circular(15),
-                            child: Image.network(
-                              banner[0]['imagem']!,
-                              fit: BoxFit.cover,
-                            ),
-                          );
-                        },
+                    child: CarouselSlider.builder(
+                      itemCount: banners.length,
+                      itemBuilder: (context, index, realIndex) {
+                        final banner = banners[
+                            index]; // banner é agora um objeto, não uma lista
+                        return ClipRRect(
+                          borderRadius: BorderRadius.circular(15),
+                          child: Image.network(
+                            banner[
+                                'imagem']!, // Acesso correto ao valor 'imagem'
+                            fit: BoxFit.cover,
+                            width: double.infinity,
+                          ),
+                        );
+                      },
+                      options: CarouselOptions(
+                        height: 200, // Ajuste a altura do carrossel
+                        autoPlay: true, // Ativa a rotação automática
+                        enlargeCenterPage: true, // Enlarge center item
+                        aspectRatio: 16 / 9, // Ajuste a proporção das imagens
+                        viewportFraction:
+                            0.8, // A fração da tela que cada item ocupa
                       ),
                     ),
                   ),
+
                 // Listar Categorias e Subcategorias no topo
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10.0),
