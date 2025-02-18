@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:menu_vizinho_mobile/controller/autenticacao_controller.dart';
-import 'package:menu_vizinho_mobile/ofertas_page.dart';
+import 'package:menu_vizinho_mobile/view/ofertas_page.dart';
 import 'package:provider/provider.dart';
 
 class TelaLogin extends StatefulWidget {

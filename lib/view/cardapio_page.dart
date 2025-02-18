@@ -3,21 +3,21 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 // biblioteca para carrosel
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:menu_vizinho_mobile/cardapio_page.dart';
-import 'package:menu_vizinho_mobile/cupons_page.dart';
-import 'package:menu_vizinho_mobile/oferta_page.dart';
+import 'package:menu_vizinho_mobile/view/cupons_page.dart';
+import 'package:menu_vizinho_mobile/view/ofertas_page.dart';
 
-import 'package:menu_vizinho_mobile/produto_page.dart';
+import 'package:menu_vizinho_mobile/view/produto_page.dart';
 
-class OfertasPage extends StatefulWidget {
-  const OfertasPage({super.key});
+class CardapioPage extends StatefulWidget {
+  const CardapioPage({super.key});
 
   @override
-  State<OfertasPage> createState() => _OfertasPageState();
+  State<CardapioPage> createState() => _CardapioPageState();
 }
 
-class _OfertasPageState extends State<OfertasPage> {
-  List<dynamic> produtos = [];
+class _CardapioPageState extends State<CardapioPage> {
+  List<dynamic> categorias = [];
+  List<dynamic> subCategorias = [];
   List<dynamic> banners = [];
   List<dynamic> bannersFromApi = [];
 
@@ -43,23 +43,26 @@ class _OfertasPageState extends State<OfertasPage> {
   }
 
   bool isLoading = true;
-  int _selectedIndex = 1; // Índice inicial do item selecionado (ofertas)
+  int _selectedIndex = 3; // Índice inicial do item selecionado (Cardápio)
 
   @override
   void initState() {
     super.initState();
     listaBanners(); // Carregar banners
-    listaOfertas();
+    listaCardapio();
+    _scrollController = ScrollController();
   }
 
-  Future<void> listaOfertas() async {
+  Future<void> listaCardapio() async {
     try {
       final response =
           // await http.get(Uri.parse('http://10.56.45.27/public/api/cardapio'));
-          await http.get(Uri.parse('http://192.168.0.5/public/api/ofertas'));
+          await http.get(Uri.parse('http://192.168.0.5/public/api/cardapio'));
       if (response.statusCode == 200) {
+        final data = json.decode(response.body);
         setState(() {
-          produtos = json.decode(response.body);
+          categorias = data['categorias'];
+          subCategorias = data['subCategorias'];
           isLoading = false;
         });
       } else {
@@ -85,7 +88,7 @@ class _OfertasPageState extends State<OfertasPage> {
 
           // Agora, você pode filtrar os banners por categoria 'cardapio'
           banners = banners
-              .where((banner) => banner['categoria'] == 'ofertas')
+              .where((banner) => banner['categoria'] == 'cardapio')
               .toList();
 
           isLoading = false;
@@ -192,15 +195,92 @@ class _OfertasPageState extends State<OfertasPage> {
                     ),
                   ),
 
-                // Listar produtos
+                // Listar Categorias e Subcategorias no topo
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10.0),
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: [
+                        // Exibe as Categorias
+                        ...categorias.map((categoria) {
+                          int index = categorias.indexOf(categoria);
+                          return Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 8.0),
+                            child: ElevatedButton(
+                              onPressed: () {
+                                scrollToCategory(index, "categoria");
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Color(0xff8c6342),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(30)),
+                              ),
+                              child: Text(
+                                categoria['titulo_categoria'],
+                                style: const TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          );
+                        }).toList(),
+                        // Exibe as Subcategorias
+                        ...subCategorias.map((subCategoria) {
+                          int index = subCategorias.indexOf(subCategoria);
+                          return Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 8.0),
+                            child: ElevatedButton(
+                              onPressed: () {
+                                scrollToCategory(index, "subcategoria");
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Color(0xff8c6342),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(30)),
+                              ),
+                              child: Text(
+                                subCategoria['titulo_sub_categoria'],
+                                style: const TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          );
+                        }).toList(),
+                      ],
+                    ),
+                  ),
+                ),
+
+                // Listar Categorias
                 ListView.builder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
-                  itemCount: produtos.length,
+                  itemCount: categorias.length,
                   itemBuilder: (context, index) {
+                    final categoria = categorias[index];
+                    final produtos = categoria['produtos'];
+
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            categoria['titulo_categoria'],
+                            style: const TextStyle(
+                              fontFamily: 'Poppins',
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xff8c6342),
+                            ),
+                          ),
+                        ),
                         ListView.builder(
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
@@ -213,7 +293,7 @@ class _OfertasPageState extends State<OfertasPage> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) =>
-                                        OfertaPage(produto: produto),
+                                        ProdutoPage(produto: produto),
                                   ),
                                 );
                               },
@@ -288,7 +368,133 @@ class _OfertasPageState extends State<OfertasPage> {
                                           const EdgeInsets.only(right: 10.0),
                                       child: Image.network(
                                         produto['imagem'],
-                                        width: 130,
+                                        width: 150,
+                                        height: 100,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ],
+                    );
+                  },
+                ),
+                // Listar Sub categorias
+                ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: categorias.length,
+                  itemBuilder: (context, index) {
+                    final subCategoria = subCategorias[index];
+                    final produtos = subCategoria['produtos'];
+
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            subCategoria['titulo_sub_categoria'],
+                            style: const TextStyle(
+                              fontFamily: 'Poppins',
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xff8c6342),
+                            ),
+                          ),
+                        ),
+                        ListView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: produtos.length,
+                          itemBuilder: (context, prodIndex) {
+                            final produto = produtos[prodIndex];
+                            return GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        ProdutoPage(produto: produto),
+                                  ),
+                                );
+                              },
+                              child: Card(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                elevation: 5,
+                                margin: const EdgeInsets.all(10.0),
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(15.0),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              produto['nome'],
+                                              style: const TextStyle(
+                                                fontFamily: 'Poppins',
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.w600,
+                                                color: Color(0xff8c6342),
+                                              ),
+                                            ),
+                                            const SizedBox(height: 8),
+                                            Text(
+                                              produto['descricao'],
+                                              maxLines: 2,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: const TextStyle(
+                                                fontFamily: 'Poppins',
+                                                fontSize: 13,
+                                                fontWeight: FontWeight.bold,
+                                                color: Color(0xffacacac),
+                                              ),
+                                            ),
+                                            const SizedBox(height: 15),
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Text(
+                                                  'R\$ ${double.parse(produto['preco']).toStringAsFixed(2)}',
+                                                  style: const TextStyle(
+                                                    fontFamily: 'Poppins',
+                                                    fontSize: 15,
+                                                    fontWeight: FontWeight.w600,
+                                                    color: Color(0xff8c6342),
+                                                  ),
+                                                ),
+                                                IconButton(
+                                                  icon: const Icon(
+                                                      Icons
+                                                          .shopping_cart_outlined,
+                                                      color: Color(0xff8c6342)),
+                                                  onPressed: () {
+                                                    // Ação do botão
+                                                  },
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding:
+                                          const EdgeInsets.only(right: 10.0),
+                                      child: Image.network(
+                                        produto['imagem'],
+                                        width: 150,
                                         height: 100,
                                         fit: BoxFit.cover,
                                       ),

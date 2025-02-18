@@ -7,7 +7,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:menu_vizinho_mobile/cardapio_page.dart';
+import 'package:menu_vizinho_mobile/view/cardapio_page.dart';
 
 
 void main() {
