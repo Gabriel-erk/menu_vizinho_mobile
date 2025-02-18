@@ -5,9 +5,8 @@ import 'dart:convert';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:menu_vizinho_mobile/view/cardapio_page.dart';
 import 'package:menu_vizinho_mobile/view/cupons_page.dart';
+import 'package:menu_vizinho_mobile/view/home_page.dart';
 import 'package:menu_vizinho_mobile/view/oferta_page.dart';
-
-import 'package:menu_vizinho_mobile/view/produto_page.dart';
 
 class OfertasPage extends StatefulWidget {
   const OfertasPage({super.key});
@@ -20,27 +19,6 @@ class _OfertasPageState extends State<OfertasPage> {
   List<dynamic> produtos = [];
   List<dynamic> banners = [];
   List<dynamic> bannersFromApi = [];
-
-// Controlador de rolagem
-// tentar colocar  final   ScrollController _scrollController = ScrollController(); caso de algum erro
-  ScrollController _scrollController = ScrollController();
-
-  // Função para rolar até a parte específica
-  void scrollToCategory(int index, String tipo) {
-    double position = 0;
-
-    // Ajuste para categorias
-    if (tipo == "categoria") {
-      position = 100.0 * index; // Posição com base no índice da categoria
-    }
-    // Ajuste para subcategorias
-    else if (tipo == "subcategoria") {
-      position = 100.0 * index + 300.0; // Subcategorias começam após categorias
-    }
-
-    _scrollController.animateTo(position,
-        duration: Duration(seconds: 1), curve: Curves.easeInOut);
-  }
 
   bool isLoading = true;
   int _selectedIndex = 1; // Índice inicial do item selecionado (ofertas)
@@ -160,7 +138,6 @@ class _OfertasPageState extends State<OfertasPage> {
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
           : ListView(
-              controller: _scrollController, // Associe o controller aqui
               children: [
                 // Carrossel de banners com a biblioteca carousel_slider
                 if (banners.isNotEmpty)
@@ -319,7 +296,12 @@ class _OfertasPageState extends State<OfertasPage> {
           // Ação para cada item
           switch (index) {
             case 0:
-              print('Home');
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const HomePage(),
+                ),
+              );
               break;
             case 1:
               // Navegação para a página de Ofertas

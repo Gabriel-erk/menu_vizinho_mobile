@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:menu_vizinho_mobile/controller/autenticacao_controller.dart';
-import 'package:menu_vizinho_mobile/view/ofertas_page.dart';
+import 'package:menu_vizinho_mobile/view/home_page.dart';
 import 'package:provider/provider.dart';
 
 class TelaLogin extends StatefulWidget {
@@ -68,7 +68,7 @@ class _TelaLoginEstado extends State<TelaLogin> {
                             Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => const OfertasPage()),
+                                  builder: (context) => const HomePage()),
                             );
                           } else {
                             // se não der para logar (caso digite um e-mail e senha que não existam), aparece uma mini barra (tipo um alert) dizendo que "erro ao fazer o login"

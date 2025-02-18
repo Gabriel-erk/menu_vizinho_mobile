@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:menu_vizinho_mobile/view/cardapio_page.dart';
+import 'package:menu_vizinho_mobile/view/home_page.dart';
 import 'package:menu_vizinho_mobile/view/ofertas_page.dart';
 
 class CuponsPage extends StatefulWidget {
@@ -184,7 +185,12 @@ class _CuponsPageState extends State<CuponsPage> {
           // Ação para cada item
           switch (index) {
             case 0:
-              print('Home');
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const HomePage(),
+                ),
+              );
               break;
             case 1:
               // Navegação para a página de Ofertas

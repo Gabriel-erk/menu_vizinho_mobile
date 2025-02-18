@@ -4,6 +4,7 @@ import 'dart:convert';
 // biblioteca para carrosel
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:menu_vizinho_mobile/view/cupons_page.dart';
+import 'package:menu_vizinho_mobile/view/home_page.dart';
 import 'package:menu_vizinho_mobile/view/ofertas_page.dart';
 
 import 'package:menu_vizinho_mobile/view/produto_page.dart';
@@ -525,7 +526,12 @@ class _CardapioPageState extends State<CardapioPage> {
           // Ação para cada item
           switch (index) {
             case 0:
-              print('Home');
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const HomePage(),
+                ),
+              );
               break;
             case 1:
               // Navegação para a página de Ofertas
