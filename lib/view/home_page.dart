@@ -166,7 +166,7 @@ class _HomePageState extends State<HomePage> {
                 Padding(
                   padding: const EdgeInsets.all(10.0),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       // Seção Ofertas Especiais
                       const Text(
@@ -175,39 +175,45 @@ class _HomePageState extends State<HomePage> {
                             fontSize: 22,
                             fontWeight: FontWeight.bold,
                             color: Colors.red),
+                        textAlign: TextAlign.center,
                       ),
                       SizedBox(
                         height: 180,
-                        child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount:
-                              (produtos.length > 2) ? 2 : produtos.length,
-                          itemBuilder: (context, index) {
-                            final produto = produtos[index];
-                            return Container(
-                              width: 150,
-                              margin: const EdgeInsets.symmetric(horizontal: 8),
-                              decoration: BoxDecoration(
-                                color: Colors.red.shade100,
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              child: Column(
-                                children: [
-                                  Image.network(
-                                    produto['imagem'],
-                                    height: 110,
-                                    width: 130,
-                                    fit: BoxFit.cover,
-                                  ),
-                                  Text(
-                                    produto['nome'],
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ],
-                              ),
-                            );
-                          },
+                        child: Center(
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount:
+                                (produtos.length > 2) ? 2 : produtos.length,
+                            itemBuilder: (context, index) {
+                              final produto = produtos[index];
+                              return Container(
+                                width: 160,
+                                margin:
+                                    const EdgeInsets.symmetric(horizontal: 10),
+                                decoration: BoxDecoration(
+                                  color: Colors.red.shade100,
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Image.network(
+                                      produto['imagem'],
+                                      height: 110,
+                                      width: 130,
+                                      fit: BoxFit.cover,
+                                    ),
+                                    Text(
+                                      produto['nome'],
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          ),
                         ),
                       ),
 
@@ -220,40 +226,46 @@ class _HomePageState extends State<HomePage> {
                             fontSize: 22,
                             fontWeight: FontWeight.bold,
                             color: Colors.orange),
+                        textAlign: TextAlign.center,
                       ),
                       SizedBox(
                         height: 180,
-                        child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount:
-                              (produtos.length > 4) ? 4 : produtos.length,
-                          itemBuilder: (context, index) {
-                            final produto =
-                                produtos[(index + 2) % produtos.length];
-                            return Container(
-                              width: 140,
-                              margin: const EdgeInsets.symmetric(horizontal: 8),
-                              decoration: BoxDecoration(
-                                color: Colors.orange.shade100,
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              child: Column(
-                                children: [
-                                  Image.network(
-                                    produto['imagem'],
-                                    height: 110,
-                                    width: 130,
-                                    fit: BoxFit.cover,
-                                  ),
-                                  Text(
-                                    produto['nome'],
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ],
-                              ),
-                            );
-                          },
+                        child: Center(
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount:
+                                (produtos.length > 4) ? 4 : produtos.length,
+                            itemBuilder: (context, index) {
+                              final produto =
+                                  produtos[(index + 2) % produtos.length];
+                              return Container(
+                                width: 160,
+                                margin:
+                                    const EdgeInsets.symmetric(horizontal: 10),
+                                decoration: BoxDecoration(
+                                  color: Colors.orange.shade100,
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Image.network(
+                                      produto['imagem'],
+                                      height: 110,
+                                      width: 130,
+                                      fit: BoxFit.cover,
+                                    ),
+                                    Text(
+                                      produto['nome'],
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          ),
                         ),
                       ),
 
@@ -266,40 +278,46 @@ class _HomePageState extends State<HomePage> {
                             fontSize: 22,
                             fontWeight: FontWeight.bold,
                             color: Colors.green),
+                        textAlign: TextAlign.center,
                       ),
                       SizedBox(
                         height: 180,
-                        child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount:
-                              (produtos.length > 4) ? 4 : produtos.length,
-                          itemBuilder: (context, index) {
-                            final produto =
-                                produtos[(index + 3) % produtos.length];
-                            return Container(
-                              width: 140,
-                              margin: const EdgeInsets.symmetric(horizontal: 8),
-                              decoration: BoxDecoration(
-                                color: Colors.green.shade100,
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              child: Column(
-                                children: [
-                                  Image.network(
-                                    produto['imagem'],
-                                    height: 110,
-                                    width: 130,
-                                    fit: BoxFit.cover,
-                                  ),
-                                  Text(
-                                    produto['nome'],
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ],
-                              ),
-                            );
-                          },
+                        child: Center(
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount:
+                                (produtos.length > 4) ? 4 : produtos.length,
+                            itemBuilder: (context, index) {
+                              final produto =
+                                  produtos[(index + 3) % produtos.length];
+                              return Container(
+                                width: 160,
+                                margin:
+                                    const EdgeInsets.symmetric(horizontal: 10),
+                                decoration: BoxDecoration(
+                                  color: Colors.green.shade100,
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Image.network(
+                                      produto['imagem'],
+                                      height: 110,
+                                      width: 130,
+                                      fit: BoxFit.cover,
+                                    ),
+                                    Text(
+                                      produto['nome'],
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          ),
                         ),
                       ),
                     ],
