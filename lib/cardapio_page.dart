@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 // biblioteca para carrosel
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:menu_vizinho_mobile/cupons_page.dart';
 import 'package:menu_vizinho_mobile/ofertas_page.dart';
 
 import 'package:menu_vizinho_mobile/produto_page.dart';
@@ -506,66 +507,70 @@ class _CardapioPageState extends State<CardapioPage> {
               ],
             ),
       bottomNavigationBar: BottomNavigationBar(
-  type: BottomNavigationBarType.fixed,
-  backgroundColor: const Color(0xff8c6342),
-  selectedItemColor: Colors.white, // Cor do item selecionado
-  unselectedItemColor: Colors.white70, // Cor dos itens não selecionados
-  currentIndex: _selectedIndex, // Índice do item selecionado
-  onTap: (index) {
-    setState(() {
-      _selectedIndex = index;
-    });
+        type: BottomNavigationBarType.fixed,
+        backgroundColor: const Color(0xff8c6342),
+        selectedItemColor: Colors.white, // Cor do item selecionado
+        unselectedItemColor: Colors.white70, // Cor dos itens não selecionados
+        currentIndex: _selectedIndex, // Índice do item selecionado
+        onTap: (index) {
+          setState(() {
+            _selectedIndex = index;
+          });
 
-    // Ação para cada item
-    switch (index) {
-      case 0:
-        print('Home');
-        break;
-      case 1:
-        // Navegação para a página de Ofertas
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const OfertasPage(),
+          // Ação para cada item
+          switch (index) {
+            case 0:
+              print('Home');
+              break;
+            case 1:
+              // Navegação para a página de Ofertas
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const OfertasPage(),
+                ),
+              );
+              break;
+            case 2:
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const CuponsPage(),
+                ),
+              );
+              break;
+            case 3:
+              // Navegação para a página de Cardápio
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const CardapioPage(),
+                ),
+              );
+              break;
+            default:
+              break;
+          }
+        },
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
           ),
-        );
-        break;
-      case 2:
-        print('Cupons');
-        break;
-      case 3:
-        // Navegação para a página de Cardápio
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const CardapioPage(),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.local_offer),
+            label: 'Ofertas',
           ),
-        );
-        break;
-      default:
-        break;
-    }
-  },
-  items: const [
-    BottomNavigationBarItem(
-      icon: Icon(Icons.home),
-      label: 'Home',
-    ),
-    BottomNavigationBarItem(
-      icon: Icon(Icons.local_offer),
-      label: 'Ofertas',
-    ),
-    BottomNavigationBarItem(
-      icon: Icon(Icons.card_giftcard),
-      label: 'Cupons',
-    ),
-    BottomNavigationBarItem(
-      icon: Icon(Icons.menu_book),
-      label: 'Cardápio',
-    ),
-  ],
-),
-
+          BottomNavigationBarItem(
+            icon: Icon(Icons.card_giftcard),
+            label: 'Cupons',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.menu_book),
+            label: 'Cardápio',
+          ),
+        ],
+      ),
     );
   }
 }

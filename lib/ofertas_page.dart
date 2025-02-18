@@ -4,6 +4,7 @@ import 'dart:convert';
 // biblioteca para carrosel
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:menu_vizinho_mobile/cardapio_page.dart';
+import 'package:menu_vizinho_mobile/cupons_page.dart';
 import 'package:menu_vizinho_mobile/oferta_page.dart';
 
 import 'package:menu_vizinho_mobile/produto_page.dart';
@@ -42,7 +43,7 @@ class _OfertasPageState extends State<OfertasPage> {
   }
 
   bool isLoading = true;
-  int _selectedIndex = 1; // Índice inicial do item selecionado (Cardápio)
+  int _selectedIndex = 1; // Índice inicial do item selecionado (ofertas)
 
   @override
   void initState() {
@@ -282,7 +283,7 @@ class _OfertasPageState extends State<OfertasPage> {
                                           const EdgeInsets.only(right: 10.0),
                                       child: Image.network(
                                         produto['imagem'],
-                                        width: 150,
+                                        width: 130,
                                         height: 100,
                                         fit: BoxFit.cover,
                                       ),
@@ -325,7 +326,12 @@ class _OfertasPageState extends State<OfertasPage> {
               );
               break;
             case 2:
-              print('Cupons');
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const CuponsPage(),
+                ),
+              );
               break;
             case 3:
               // Navegação para a página de Cardápio

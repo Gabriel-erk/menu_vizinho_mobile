@@ -120,8 +120,8 @@ class OfertaPage extends StatelessWidget {
             const SizedBox(height: 10),
 
             // Seção de Adicionais
-            ExpansionTile(
-              title: const Text(
+            const ExpansionTile(
+              title: Text(
                 "Adicionais - Escolha até 5 opções",
                 style: TextStyle(
                   fontFamily: 'Poppins',
@@ -132,23 +132,23 @@ class OfertaPage extends StatelessWidget {
               ),
               children: [
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: EdgeInsets.all(8.0),
                   child: Column(
                     children: [
                       ListTile(
-                        leading: const Icon(Icons.check_circle,
-                            color: Color(0xff8c6342)),
-                        title: const Text("Adicional 1"),
+                        leading:
+                            Icon(Icons.check_circle, color: Color(0xff8c6342)),
+                        title: Text("Adicional 1"),
                       ),
                       ListTile(
-                        leading: const Icon(Icons.check_circle,
-                            color: Color(0xff8c6342)),
-                        title: const Text("Adicional 2"),
+                        leading:
+                            Icon(Icons.check_circle, color: Color(0xff8c6342)),
+                        title: Text("Adicional 2"),
                       ),
                       ListTile(
-                        leading: const Icon(Icons.check_circle,
-                            color: Color(0xff8c6342)),
-                        title: const Text("Adicional 3"),
+                        leading:
+                            Icon(Icons.check_circle, color: Color(0xff8c6342)),
+                        title: Text("Adicional 3"),
                       ),
                     ],
                   ),

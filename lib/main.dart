@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:menu_vizinho_mobile/cardapio_page.dart';
+import 'package:menu_vizinho_mobile/cupons_page.dart';
 import 'package:menu_vizinho_mobile/ofertas_page.dart';
 
 void main(List<String> args) {
@@ -7,6 +8,6 @@ void main(List<String> args) {
     title: "MenuVizinho",
     debugShowCheckedModeBanner: false,
     // themeMode: ThemeData(),
-    home: OfertasPage(),
+    home: CuponsPage(),
   ));
 }
