@@ -1,37 +1,63 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+// biblioteca para carrosel
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:menu_vizinho_mobile/cardapio_page.dart';
 
 import 'package:menu_vizinho_mobile/produto_page.dart';
 
-class CardapioPage extends StatefulWidget {
-  const CardapioPage({super.key});
+class OfertasPage extends StatefulWidget {
+  const OfertasPage({super.key});
 
   @override
-  State<CardapioPage> createState() => _CardapioPageState();
+  State<OfertasPage> createState() => _OfertasPageState();
 }
 
-class _CardapioPageState extends State<CardapioPage> {
-  List<dynamic> ofertas = [];
+class _OfertasPageState extends State<OfertasPage> {
+  List<dynamic> produtos = [];
   List<dynamic> banners = [];
+  List<dynamic> bannersFromApi = [];
+
+// Controlador de rolagem
+// tentar colocar  final   ScrollController _scrollController = ScrollController(); caso de algum erro
+  ScrollController _scrollController = ScrollController();
+
+  // Função para rolar até a parte específica
+  void scrollToCategory(int index, String tipo) {
+    double position = 0;
+
+    // Ajuste para categorias
+    if (tipo == "categoria") {
+      position = 100.0 * index; // Posição com base no índice da categoria
+    }
+    // Ajuste para subcategorias
+    else if (tipo == "subcategoria") {
+      position = 100.0 * index + 300.0; // Subcategorias começam após categorias
+    }
+
+    _scrollController.animateTo(position,
+        duration: Duration(seconds: 1), curve: Curves.easeInOut);
+  }
+
   bool isLoading = true;
   int _selectedIndex = 1; // Índice inicial do item selecionado (Cardápio)
 
   @override
   void initState() {
     super.initState();
-    listaCardapio();
+    listaBanners(); // Carregar banners
+    listaOfertas();
   }
 
-  Future<void> listaCardapio() async {
+  Future<void> listaOfertas() async {
     try {
       final response =
           // await http.get(Uri.parse('http://10.56.45.27/public/api/cardapio'));
-          await http.get(Uri.parse('http://192.168.0.10/public/api/ofertas'));
+          await http.get(Uri.parse('http://192.168.0.5/public/api/ofertas'));
       if (response.statusCode == 200) {
-        final data = json.decode(response.body);
         setState(() {
-          ofertas = data['ofertas'];
+          produtos = json.decode(response.body);
           isLoading = false;
         });
       } else {
@@ -45,10 +71,21 @@ class _CardapioPageState extends State<CardapioPage> {
   Future<void> listaBanners() async {
     try {
       final response =
-          await http.get(Uri.parse('http://192.168.0.10/public/api/cardapio'));
+          await http.get(Uri.parse('http://192.168.0.5/public/api/banner'));
       if (response.statusCode == 200) {
         setState(() {
-          banners = json.decode(response.body);
+          // Decodificando a resposta JSON
+          bannersFromApi = json.decode(response.body);
+
+          // Acessando o primeiro item da lista principal
+          banners =
+              bannersFromApi[0]; // Aqui você acessa o primeiro array de banners
+
+          // Agora, você pode filtrar os banners por categoria 'cardapio'
+          banners = banners
+              .where((banner) => banner['categoria'] == 'ofertas')
+              .toList();
+
           isLoading = false;
         });
       }
@@ -67,7 +104,6 @@ class _CardapioPageState extends State<CardapioPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Row(
-          // mainAxis é usado em Row (agrupa na horizontal, e é tipo o jusify content do flex)
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             Icon(
@@ -76,17 +112,11 @@ class _CardapioPageState extends State<CardapioPage> {
             )
           ],
         ),
-        // definindo cor de fundo da appBar (basicamente a navbar daqui)
         backgroundColor: const Color(0xff8c6342),
       ),
-      // coloca as três barrinhas no canto superior esquerdo, permitindo um menu lateral (basicamente um menu lateral)
       drawer: Drawer(
-        // child é um elemento filho de drawer
-        // ListVIew é basicamente uma lista ul do html
         child: ListView(
-          // elementos filhos da nossa lista
           children: const [
-            // drawerHeader é basicamente o cabeçalho do menu lateral, o que aparecerá no topo
             SizedBox(
               height: 100,
               child: DrawerHeader(
@@ -100,12 +130,8 @@ class _CardapioPageState extends State<CardapioPage> {
                         color: Color(0xfff9eed9)),
                   )),
             ),
-            // listTitle para tópico de lista
             ListTile(
-              // leading posiciona do lado esquerdo, e está posicionado um icone no lado esquerdo
               leading: Icon(Icons.login),
-              // este posiciona no lado direito
-              // trailing: Icon(Icons.login),
               title: Text("Login"),
             ),
             ListTile(
@@ -127,39 +153,53 @@ class _CardapioPageState extends State<CardapioPage> {
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
           : ListView(
+              controller: _scrollController, // Associe o controller aqui
               children: [
-                // Listar Categorias
+                // Carrossel de banners com a biblioteca carousel_slider
+                if (banners.isNotEmpty)
+                  Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: CarouselSlider.builder(
+                      itemCount: banners.length,
+                      itemBuilder: (context, index, realIndex) {
+                        final banner = banners[
+                            index]; // banner é agora um objeto, não uma lista
+                        return ClipRRect(
+                          borderRadius: BorderRadius.circular(15),
+                          child: Image.network(
+                            banner[
+                                'imagem']!, // Acesso correto ao valor 'imagem'
+                            fit: BoxFit.cover,
+                            width: double.infinity,
+                          ),
+                        );
+                      },
+                      options: CarouselOptions(
+                        height: 200, // Ajuste a altura do carrossel
+                        autoPlay: true, // Ativa a rotação automática
+                        enlargeCenterPage: true, // Enlarge center item
+                        aspectRatio: 16 / 9, // Ajuste a proporção das imagens
+                        viewportFraction:
+                            0.8, // A fração da tela que cada item ocupa
+                      ),
+                    ),
+                  ),
+
+                // Listar produtos
                 ListView.builder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
-                  itemCount: ofertas.length,
+                  itemCount: produtos.length,
                   itemBuilder: (context, index) {
-                    // final categoria = ofertas[index];
-                    final oferta = ofertas[index];
-
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // Título da Categoria
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            oferta['titulo_oferta'],
-                            style: const TextStyle(
-                              fontFamily: 'Poppins',
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: Color(0xff8c6342),
-                            ),
-                          ),
-                        ),
-                        // Lista de Produtos da Categoria
                         ListView.builder(
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
-                          itemCount: ofertas.length,
+                          itemCount: produtos.length,
                           itemBuilder: (context, prodIndex) {
-                            final produto = ofertas[prodIndex];
+                            final produto = produtos[prodIndex];
                             return GestureDetector(
                               onTap: () {
                                 Navigator.push(
@@ -171,17 +211,13 @@ class _CardapioPageState extends State<CardapioPage> {
                                 );
                               },
                               child: Card(
-                                // alterando o shape para para ter bordas arredondadas
                                 shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(
-                                      15), // Bordas arredondadas
+                                  borderRadius: BorderRadius.circular(15),
                                 ),
-                                elevation:
-                                    5, // Elevação para sombra (cria uma sombra)
+                                elevation: 5,
                                 margin: const EdgeInsets.all(10.0),
                                 child: Row(
                                   children: [
-                                    // Informações do Produto
                                     Expanded(
                                       child: Padding(
                                         padding: const EdgeInsets.all(15.0),
@@ -225,7 +261,6 @@ class _CardapioPageState extends State<CardapioPage> {
                                                     color: Color(0xff8c6342),
                                                   ),
                                                 ),
-                                                // Ícone de adicionar ao carrinho
                                                 IconButton(
                                                   icon: const Icon(
                                                       Icons
@@ -241,7 +276,6 @@ class _CardapioPageState extends State<CardapioPage> {
                                         ),
                                       ),
                                     ),
-                                    // Imagem do Produto
                                     Padding(
                                       padding:
                                           const EdgeInsets.only(right: 10.0),
@@ -281,21 +315,24 @@ class _CardapioPageState extends State<CardapioPage> {
               print('Home');
               break;
             case 1:
-              print('Ofertas');
+              // Navegação para a página de Ofertas
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const OfertasPage(),
+                ),
+              );
               break;
             case 2:
               print('Cupons');
               break;
             case 3:
-              GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const CardapioPage(),
-                    ),
-                  );
-                },
+              // Navegação para a página de Cardápio
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const CardapioPage(),
+                ),
               );
               break;
             default:
