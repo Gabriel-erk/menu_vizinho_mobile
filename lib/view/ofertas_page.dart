@@ -8,6 +8,7 @@ import 'package:menu_vizinho_mobile/view/cupons_page.dart';
 import 'package:menu_vizinho_mobile/view/home_page.dart';
 import 'package:menu_vizinho_mobile/view/oferta_page.dart';
 import 'package:menu_vizinho_mobile/view/politica_page.dart';
+import 'package:menu_vizinho_mobile/view/sobre_page.dart';
 
 class OfertasPage extends StatefulWidget {
   const OfertasPage({super.key});
@@ -35,7 +36,7 @@ class _OfertasPageState extends State<OfertasPage> {
     try {
       final response =
           // await http.get(Uri.parse('http://10.56.46.42/public/api/ofertas'));
-      await http.get(Uri.parse('http://192.168.0.5/public/api/ofertas'));
+          await http.get(Uri.parse('http://192.168.0.5/public/api/ofertas'));
       if (response.statusCode == 200) {
         setState(() {
           produtos = json.decode(response.body);
@@ -53,7 +54,7 @@ class _OfertasPageState extends State<OfertasPage> {
     try {
       final response =
           // await http.get(Uri.parse('http://10.56.46.42/public/api/banner'));
-      await http.get(Uri.parse('http://192.168.0.5/public/api/banner'));
+          await http.get(Uri.parse('http://192.168.0.5/public/api/banner'));
       if (response.statusCode == 200) {
         setState(() {
           // Decodificando a resposta JSON
@@ -105,7 +106,7 @@ class _OfertasPageState extends State<OfertasPage> {
                   decoration: BoxDecoration(color: Color(0xff8c6342)),
                   padding: EdgeInsets.symmetric(vertical: 28, horizontal: 16),
                   child: Text(
-                    "Olá, Gabriel Lindão",
+                    "Mr.Burger App",
                     style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
@@ -121,9 +122,15 @@ class _OfertasPageState extends State<OfertasPage> {
               title: Text("Meus pedidos"),
             ),
             const Divider(),
-            const ListTile(
-              leading: Icon(Icons.info),
-              title: Text("Sobre o Mr.Burger"),
+            ListTile(
+              leading: const Icon(Icons.policy),
+              title: const Text("Sobre o Mr.Burger"),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const SobrePage()),
+                );
+              },
             ),
             ListTile(
               leading: const Icon(Icons.policy),

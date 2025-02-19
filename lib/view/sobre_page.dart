@@ -25,13 +25,11 @@ class _SobrePageState extends State<SobrePage> {
   Future<void> sobreLoja() async {
     try {
       final response =
-          // await http.get(Uri.parse('http://10.56.46.42/public/api/loja/sobre'));
           await http.get(Uri.parse('http://192.168.0.5/public/api/loja/sobre'));
       if (response.statusCode == 200) {
         setState(() {
-          // API ESTA RETORNANDO APENAS UM TEXTO, ENTÃO APENAS O ARMAZENO AQUI DIRETAMENTE
-          sobre = response.body; // Apenas armazena a string diretamente
-
+          sobre = json.decode(
+              utf8.decode(response.bodyBytes)); // Decodifica corretamente
           isLoading = false;
         });
       } else {
@@ -97,7 +95,7 @@ class _SobrePageState extends State<SobrePage> {
                   decoration: BoxDecoration(color: Color(0xff8c6342)),
                   padding: EdgeInsets.symmetric(vertical: 28, horizontal: 16),
                   child: Text(
-                    "Olá, Gabriel Lindão",
+                    "Mr.Burger App",
                     style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,

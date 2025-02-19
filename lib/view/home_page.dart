@@ -29,7 +29,7 @@ class _HomePageState extends State<HomePage> {
     try {
       final response =
           // await http.get(Uri.parse('http://10.56.46.42/public/api/produtos'));
-      await http.get(Uri.parse('http://192.168.0.5/public/api/produtos'));
+          await http.get(Uri.parse('http://192.168.0.5/public/api/produtos'));
       if (response.statusCode == 200) {
         setState(() {
           produtos = json.decode(response.body);
@@ -48,7 +48,7 @@ class _HomePageState extends State<HomePage> {
     try {
       final response =
           // await http.get(Uri.parse('http://10.56.46.42/public/api/banner'));
-      await http.get(Uri.parse('http://192.168.0.5/public/api/banner'));
+          await http.get(Uri.parse('http://192.168.0.5/public/api/banner'));
       if (response.statusCode == 200) {
         setState(() {
           // Decodificando a resposta JSON
@@ -102,7 +102,7 @@ class _HomePageState extends State<HomePage> {
                   decoration: BoxDecoration(color: Color(0xff8c6342)),
                   padding: EdgeInsets.symmetric(vertical: 28, horizontal: 16),
                   child: Text(
-                    "Olá, Gabriel Lindão",
+                    "Mr.Burger App",
                     style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,

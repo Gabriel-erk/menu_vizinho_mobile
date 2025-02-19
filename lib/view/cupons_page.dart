@@ -5,6 +5,7 @@ import 'package:menu_vizinho_mobile/view/cardapio_page.dart';
 import 'package:menu_vizinho_mobile/view/home_page.dart';
 import 'package:menu_vizinho_mobile/view/ofertas_page.dart';
 import 'package:menu_vizinho_mobile/view/politica_page.dart';
+import 'package:menu_vizinho_mobile/view/sobre_page.dart';
 
 class CuponsPage extends StatefulWidget {
   const CuponsPage({super.key});
@@ -23,7 +24,7 @@ class _CuponsPageState extends State<CuponsPage> {
     try {
       final response =
           // await http.get(Uri.parse('http://10.56.46.42/public/api/cupom'));
-      await http.get(Uri.parse('http://192.168.0.5/public/api/cupom'));
+          await http.get(Uri.parse('http://192.168.0.5/public/api/cupom'));
       if (response.statusCode == 200) {
         setState(() {
           cupons = json.decode(response.body);
@@ -72,7 +73,7 @@ class _CuponsPageState extends State<CuponsPage> {
                   decoration: BoxDecoration(color: Color(0xff8c6342)),
                   padding: EdgeInsets.symmetric(vertical: 28, horizontal: 16),
                   child: Text(
-                    "Olá, Gabriel Lindão",
+                    "Mr.Burger App",
                     style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
@@ -88,9 +89,15 @@ class _CuponsPageState extends State<CuponsPage> {
               title: Text("Meus pedidos"),
             ),
             const Divider(),
-            const ListTile(
-              leading: Icon(Icons.info),
-              title: Text("Sobre o Mr.Burger"),
+            ListTile(
+              leading: const Icon(Icons.policy),
+              title: const Text("Sobre o Mr.Burger"),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const SobrePage()),
+                );
+              },
             ),
             ListTile(
               leading: const Icon(Icons.policy),

@@ -7,6 +7,7 @@ import 'dart:convert';
 import 'package:menu_vizinho_mobile/view/cupons_page.dart';
 import 'package:menu_vizinho_mobile/view/home_page.dart';
 import 'package:menu_vizinho_mobile/view/ofertas_page.dart';
+import 'package:menu_vizinho_mobile/view/sobre_page.dart';
 
 class PoliticaPage extends StatefulWidget {
   const PoliticaPage({super.key});
@@ -106,7 +107,7 @@ class _PoliticaPageState extends State<PoliticaPage> {
                   decoration: BoxDecoration(color: Color(0xff8c6342)),
                   padding: EdgeInsets.symmetric(vertical: 28, horizontal: 16),
                   child: Text(
-                    "Olá, Gabriel Lindão",
+                    "Mr.Burger App",
                     style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
@@ -122,9 +123,15 @@ class _PoliticaPageState extends State<PoliticaPage> {
               title: Text("Meus pedidos"),
             ),
             const Divider(),
-            const ListTile(
-              leading: Icon(Icons.info),
-              title: Text("Sobre o Mr.Burger"),
+            ListTile(
+              leading: const Icon(Icons.policy),
+              title: const Text("Sobre o Mr.Burger"),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const SobrePage()),
+                );
+              },
             ),
             ListTile(
               leading: const Icon(Icons.policy),
