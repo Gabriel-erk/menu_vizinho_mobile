@@ -8,6 +8,7 @@ import 'package:menu_vizinho_mobile/view/cupons_page.dart';
 import 'package:menu_vizinho_mobile/view/ofertas_page.dart';
 import 'package:menu_vizinho_mobile/view/politica_page.dart';
 import 'package:menu_vizinho_mobile/view/produto_page.dart';
+import 'package:menu_vizinho_mobile/view/sobre_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -117,9 +118,15 @@ class _HomePageState extends State<HomePage> {
               title: Text("Meus pedidos"),
             ),
             const Divider(),
-            const ListTile(
-              leading: Icon(Icons.info),
-              title: Text("Sobre o Mr.Burger"),
+            ListTile(
+              leading: const Icon(Icons.policy),
+              title: const Text("Sobre o Mr.Burger"),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const SobrePage()),
+                );
+              },
             ),
             ListTile(
               leading: const Icon(Icons.policy),

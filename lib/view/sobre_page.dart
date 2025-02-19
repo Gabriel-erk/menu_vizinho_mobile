@@ -1,65 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:intl/intl.dart';
 import 'package:menu_vizinho_mobile/view/cardapio_page.dart';
 import 'dart:convert';
 // páginas bottom navigator
 import 'package:menu_vizinho_mobile/view/cupons_page.dart';
 import 'package:menu_vizinho_mobile/view/home_page.dart';
 import 'package:menu_vizinho_mobile/view/ofertas_page.dart';
+import 'package:menu_vizinho_mobile/view/politica_page.dart';
 
-class PoliticaPage extends StatefulWidget {
-  const PoliticaPage({super.key});
+class SobrePage extends StatefulWidget {
+  const SobrePage({super.key});
 
   @override
-  State<PoliticaPage> createState() => _PoliticaPageState();
+  State<SobrePage> createState() => _SobrePageState();
 }
 
-class _PoliticaPageState extends State<PoliticaPage> {
-  List<dynamic> politica = [];
+class _SobrePageState extends State<SobrePage> {
   List<dynamic> infoLoja = [];
-  var updatedAt = '';
+  var sobre = '';
   bool isLoading = true;
   int _selectedIndex =
-      1; // Índice inicial do item selecionado (10 pois não é nenhuma das opções que tenho)
+      1; // Índice inicial do item selecionado ( não é nenhuma das opções que tenho)
 
-  Future<void> listaPolitica() async {
+  Future<void> sobreLoja() async {
     try {
-      final response = await http
-          .get(Uri.parse('http://10.56.46.42/public/api/loja/politica'));
+      final response =
+          await http.get(Uri.parse('http://10.56.46.42/public/api/loja/sobre'));
       // await http.get(Uri.parse('http://192.168.0.5/public/api/cupom'));
       if (response.statusCode == 200) {
         setState(() {
-          politica = json.decode(response.body);
-          isLoading = false;
-        });
-      } else {
-        mostrarError('Erro ao carregar dados');
-      }
-    } catch (e) {
-      mostrarError('Erro: $e');
-    }
-  }
-
-  Future<void> informacoesLoja() async {
-    try {
-      final response =
-          await http.get(Uri.parse('http://10.56.46.42/public/api/loja'));
-      if (response.statusCode == 200) {
-        setState(() {
-          // Carrega o JSON na variável infoLoja
           infoLoja = json.decode(response.body);
-
-          // Agora você pode acessar 'updated_at' da loja
-          var loja = infoLoja[0]; // Acesse a primeira loja do array
-          updatedAt = loja['updated_at']; // Acesse o 'updated_at' dessa loja
-
-          // Imprimindo a data de atualização para debug
-          // print('Data de atualização: $updatedAt');
-
-          // Formatar a data (apenas dia, mês e ano)
-          updatedAt =
-              DateFormat('dd/MM/yyyy').format(DateTime.parse(updatedAt));
+          var loja = infoLoja[0];
+          sobre = loja['texto_sobre_restaurante'];
 
           isLoading = false;
         });
@@ -74,12 +46,6 @@ class _PoliticaPageState extends State<PoliticaPage> {
   void mostrarError(String mensagem) {
     ScaffoldMessenger.of(context)
         .showSnackBar(SnackBar(content: Text(mensagem)));
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    listaPolitica();
   }
 
   @override
@@ -122,9 +88,15 @@ class _PoliticaPageState extends State<PoliticaPage> {
               title: Text("Meus pedidos"),
             ),
             const Divider(),
-            const ListTile(
-              leading: Icon(Icons.info),
-              title: Text("Sobre o Mr.Burger"),
+            ListTile(
+              leading: const Icon(Icons.policy),
+              title: const Text("Sobre o Mr.Burger"),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const SobrePage()),
+                );
+              },
             ),
             ListTile(
               leading: const Icon(Icons.policy),
@@ -146,46 +118,7 @@ class _PoliticaPageState extends State<PoliticaPage> {
       ),
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
-          : SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    for (var bloco in politica)
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 16.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              bloco['titulo'],
-                              style: const TextStyle(
-                                fontSize: 22,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            const SizedBox(height: 8),
-                            Text(
-                              bloco['conteudo'],
-                              style: const TextStyle(fontSize: 18),
-                            ),
-                          ],
-                        ),
-                      ),
-                    const Text(
-                      "Ao utilizar nosso site, você concorda com esta Política de Privacidade. Se tiver dúvidas sobre nossas práticas de privacidade, entre em contato conosco.",
-                      style: TextStyle(fontSize: 18),
-                    ),
-                    const SizedBox(height: 16),
-                    Text(
-                      "Última atualização: $updatedAt",
-                      style: const TextStyle(fontSize: 16, color: Colors.grey),
-                    )
-                  ],
-                ),
-              ),
-            ),
+          : SingleChildScrollView(),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         backgroundColor: const Color(0xff8c6342),
