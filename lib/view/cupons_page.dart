@@ -27,7 +27,8 @@ class _CuponsPageState extends State<CuponsPage> {
           await http.get(Uri.parse('http://192.168.0.5/public/api/cupom'));
       if (response.statusCode == 200) {
         setState(() {
-          cupons = json.decode(response.body);
+          // como json retornado da api contem uma lista dentro de outra lista, acessamos apenas a lista interna com [0] e acesso todos os cupons diretamente
+          cupons = json.decode(response.body)[0];
           isLoading = false;
         });
       } else {
@@ -146,14 +147,14 @@ class _CuponsPageState extends State<CuponsPage> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      cupom[0]['nome_cupom'],
+                                      cupom['nome_cupom'],
                                       style: const TextStyle(
                                           fontSize: 18,
                                           fontWeight: FontWeight.bold,
                                           color: Color(0xff8c6342)),
                                     ),
                                     const SizedBox(height: 8),
-                                    Text(cupom[0]['descricao_cupom']),
+                                    Text(cupom['descricao_cupom']),
                                   ],
                                 ),
                               ),
@@ -161,7 +162,7 @@ class _CuponsPageState extends State<CuponsPage> {
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
                                   Text(
-                                    'Acaba em ${cupom[0]['horas_restantes']}h',
+                                    'Acaba em ${cupom['horas_restantes']}h',
                                     style: const TextStyle(color: Colors.grey),
                                   ),
                                   const SizedBox(height: 8),
