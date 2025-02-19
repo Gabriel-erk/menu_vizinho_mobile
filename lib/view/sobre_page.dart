@@ -49,6 +49,12 @@ class _SobrePageState extends State<SobrePage> {
   }
 
   @override
+void initState() {
+  super.initState();
+  sobreLoja();
+}
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
