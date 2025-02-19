@@ -6,6 +6,8 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:menu_vizinho_mobile/view/cardapio_page.dart';
 import 'package:menu_vizinho_mobile/view/cupons_page.dart';
 import 'package:menu_vizinho_mobile/view/ofertas_page.dart';
+import 'package:menu_vizinho_mobile/view/politica_page.dart';
+import 'package:menu_vizinho_mobile/view/produto_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -25,8 +27,8 @@ class _HomePageState extends State<HomePage> {
   Future<void> produtosHome() async {
     try {
       final response =
-          // await http.get(Uri.parse('http://10.56.45.27/public/api/cardapio'));
-          await http.get(Uri.parse('http://192.168.0.5/public/api/produtos'));
+          await http.get(Uri.parse('http://10.56.46.42/public/api/produtos'));
+      // await http.get(Uri.parse('http://192.168.0.5/public/api/produtos'));
       if (response.statusCode == 200) {
         setState(() {
           produtos = json.decode(response.body);
@@ -44,7 +46,8 @@ class _HomePageState extends State<HomePage> {
   Future<void> listaBanners() async {
     try {
       final response =
-          await http.get(Uri.parse('http://192.168.0.5/public/api/banner'));
+          await http.get(Uri.parse('http://10.56.46.42/public/api/banner'));
+      // await http.get(Uri.parse('http://192.168.0.5/public/api/banner'));
       if (response.statusCode == 200) {
         setState(() {
           // Decodificando a resposta JSON
@@ -91,8 +94,8 @@ class _HomePageState extends State<HomePage> {
       ),
       drawer: Drawer(
         child: ListView(
-          children: const [
-            SizedBox(
+          children: [
+            const SizedBox(
               height: 100,
               child: DrawerHeader(
                   decoration: BoxDecoration(color: Color(0xff8c6342)),
@@ -105,25 +108,31 @@ class _HomePageState extends State<HomePage> {
                         color: Color(0xfff9eed9)),
                   )),
             ),
-            ListTile(
+            const ListTile(
               leading: Icon(Icons.verified_user_rounded),
               title: Text("Minha conta"),
             ),
-            ListTile(
+            const ListTile(
               leading: Icon(Icons.cast_sharp),
               title: Text("Meus pedidos"),
             ),
-            Divider(),
-            ListTile(
+            const Divider(),
+            const ListTile(
               leading: Icon(Icons.info),
               title: Text("Sobre o Mr.Burger"),
             ),
             ListTile(
-              leading: Icon(Icons.policy),
-              title: Text("Políticas do Mr.Burger"),
+              leading: const Icon(Icons.policy),
+              title: const Text("Políticas do Mr.Burger"),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const PoliticaPage()),
+                );
+              },
             ),
-            Divider(),
-            ListTile(
+            const Divider(),
+            const ListTile(
               leading: Icon(Icons.logout),
               title: Text("Sair"),
             ),
@@ -169,9 +178,9 @@ class _HomePageState extends State<HomePage> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       // Seção Ofertas Especiais
-                      Row(
+                      const Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
+                        children: [
                           Icon(Icons.local_offer, color: Color(0xff8c6342)),
                           SizedBox(width: 8),
                           Text(
@@ -183,6 +192,7 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ],
                       ),
+                      const SizedBox(height: 10),
                       SizedBox(
                         height: 200,
                         child: Center(
@@ -192,41 +202,52 @@ class _HomePageState extends State<HomePage> {
                                 (produtos.length > 2) ? 2 : produtos.length,
                             itemBuilder: (context, index) {
                               final produto = produtos[index];
-                              return Container(
-                                width: 160,
-                                margin:
-                                    const EdgeInsets.symmetric(horizontal: 10),
-                                decoration: BoxDecoration(
-                                  color: Color(0xfff9eed9),
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    ClipRRect(
-                                      borderRadius: BorderRadius.circular(10),
-                                      child: Image.network(
-                                        produto['imagem'],
-                                        // height: 120,
-                                        // width: 140,
-                                        fit: BoxFit.cover,
+                              return GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          ProdutoPage(produto: produto),
+                                    ),
+                                  );
+                                },
+                                child: Container(
+                                  width: 160,
+                                  margin: const EdgeInsets.symmetric(
+                                      horizontal: 10),
+                                  decoration: BoxDecoration(
+                                    color: Color(0xfff9eed9),
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      ClipRRect(
+                                        borderRadius: BorderRadius.circular(10),
+                                        child: Image.network(
+                                          produto['imagem'],
+                                          // height: 120,
+                                          // width: 140,
+                                          fit: BoxFit.cover,
+                                        ),
                                       ),
-                                    ),
-                                    SizedBox(height: 5),
-                                    Text(
-                                      produto['nome'],
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Color(0xff8c6342)),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                    Text(
-                                      "R\$ ${double.parse(produto['preco']).toStringAsFixed(2)}",
-                                      style: const TextStyle(
-                                          color: Color(0xff8c6342),
-                                          fontSize: 14),
-                                    ),
-                                  ],
+                                      SizedBox(height: 5),
+                                      Text(
+                                        produto['nome'],
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Color(0xff8c6342)),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                      Text(
+                                        "R\$ ${double.parse(produto['preco']).toStringAsFixed(2)}",
+                                        style: const TextStyle(
+                                            color: Color(0xff8c6342),
+                                            fontSize: 14),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               );
                             },
@@ -237,9 +258,9 @@ class _HomePageState extends State<HomePage> {
                       const SizedBox(height: 20),
 
                       // Seção Pratos Populares
-                      Row(
+                      const Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
+                        children: [
                           Icon(Icons.restaurant, color: Color(0xff8c6342)),
                           SizedBox(width: 8),
                           Text(
@@ -251,6 +272,7 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ],
                       ),
+                      const SizedBox(height: 10),
                       SizedBox(
                         height: 200,
                         child: Center(
@@ -261,41 +283,52 @@ class _HomePageState extends State<HomePage> {
                             itemBuilder: (context, index) {
                               final produto =
                                   produtos[(index + 2) % produtos.length];
-                              return Container(
-                                width: 160,
-                                margin:
-                                    const EdgeInsets.symmetric(horizontal: 10),
-                                decoration: BoxDecoration(
-                                  color: Color(0xfff9eed9),
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    ClipRRect(
-                                      borderRadius: BorderRadius.circular(10),
-                                      child: Image.network(
-                                        produto['imagem'],
-                                        // height: 120,
-                                        // width: 140,
-                                        fit: BoxFit.cover,
+                              return GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          ProdutoPage(produto: produto),
+                                    ),
+                                  );
+                                },
+                                child: Container(
+                                  width: 160,
+                                  margin: const EdgeInsets.symmetric(
+                                      horizontal: 10),
+                                  decoration: BoxDecoration(
+                                    color: Color(0xfff9eed9),
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      ClipRRect(
+                                        borderRadius: BorderRadius.circular(10),
+                                        child: Image.network(
+                                          produto['imagem'],
+                                          // height: 120,
+                                          // width: 140,
+                                          fit: BoxFit.cover,
+                                        ),
                                       ),
-                                    ),
-                                    SizedBox(height: 5),
-                                    Text(
-                                      produto['nome'],
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Color(0xff8c6342)),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                    Text(
-                                      "R\$ ${double.parse(produto['preco']).toStringAsFixed(2)}",
-                                      style: const TextStyle(
-                                          color: Color(0xff8c6342),
-                                          fontSize: 14),
-                                    ),
-                                  ],
+                                      SizedBox(height: 5),
+                                      Text(
+                                        produto['nome'],
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Color(0xff8c6342)),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                      Text(
+                                        "R\$ ${double.parse(produto['preco']).toStringAsFixed(2)}",
+                                        style: const TextStyle(
+                                            color: Color(0xff8c6342),
+                                            fontSize: 14),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               );
                             },
@@ -306,9 +339,9 @@ class _HomePageState extends State<HomePage> {
                       const SizedBox(height: 20),
 
                       // Seção Sugestões
-                      Row(
+                      const Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
+                        children: [
                           Icon(Icons.thumb_up, color: Color(0xff8c6342)),
                           SizedBox(width: 8),
                           Text(
@@ -320,6 +353,7 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ],
                       ),
+                      const SizedBox(height: 10),
                       SizedBox(
                         height: 220,
                         child: Center(
@@ -330,51 +364,62 @@ class _HomePageState extends State<HomePage> {
                             itemBuilder: (context, index) {
                               final produto =
                                   produtos[(index + 3) % produtos.length];
-                              return Container(
-                                width: 180,
-                                margin:
-                                    const EdgeInsets.symmetric(horizontal: 10),
-                                padding: const EdgeInsets.all(8),
-                                decoration: BoxDecoration(
-                                  color: Color(0xfff9eed9),
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    ClipRRect(
-                                      borderRadius: BorderRadius.circular(10),
-                                      child: Image.network(
-                                        produto['imagem'],
-                                        // height: 110,
-                                        // width: 160,
-                                        fit: BoxFit.cover,
+                              return GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          ProdutoPage(produto: produto),
+                                    ),
+                                  );
+                                },
+                                child: Container(
+                                  width: 180,
+                                  margin: const EdgeInsets.symmetric(
+                                      horizontal: 10),
+                                  padding: const EdgeInsets.all(8),
+                                  decoration: BoxDecoration(
+                                    color: Color(0xfff9eed9),
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      ClipRRect(
+                                        borderRadius: BorderRadius.circular(10),
+                                        child: Image.network(
+                                          produto['imagem'],
+                                          // height: 110,
+                                          // width: 160,
+                                          fit: BoxFit.cover,
+                                        ),
                                       ),
-                                    ),
-                                    SizedBox(height: 5),
-                                    Text(
-                                      produto['nome'],
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Color(0xff8c6342)),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                    Text(
-                                      "R\$ ${double.parse(produto['preco']).toStringAsFixed(2)}",
-                                      style: const TextStyle(
-                                          color: Color(0xff8c6342),
-                                          fontSize: 14),
-                                    ),
-                                    Text(
-                                      produto['descricao'].length > 50
-                                          ? "${produto['descricao'].substring(0, 50)}..."
-                                          : produto['descricao'],
-                                      style: const TextStyle(
-                                          color: Color(0xff8c6342),
-                                          fontSize: 12),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  ],
+                                      SizedBox(height: 5),
+                                      Text(
+                                        produto['nome'],
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Color(0xff8c6342)),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                      Text(
+                                        "R\$ ${double.parse(produto['preco']).toStringAsFixed(2)}",
+                                        style: const TextStyle(
+                                            color: Color(0xff8c6342),
+                                            fontSize: 14),
+                                      ),
+                                      Text(
+                                        produto['descricao'].length > 50
+                                            ? "${produto['descricao'].substring(0, 50)}..."
+                                            : produto['descricao'],
+                                        style: const TextStyle(
+                                            color: Color(0xff8c6342),
+                                            fontSize: 12),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               );
                             },
