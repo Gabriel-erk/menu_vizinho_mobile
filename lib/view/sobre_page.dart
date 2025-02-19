@@ -25,7 +25,8 @@ class _SobrePageState extends State<SobrePage> {
   Future<void> sobreLoja() async {
     try {
       final response =
-          await http.get(Uri.parse('http://192.168.0.5/public/api/loja/sobre'));
+          // await http.get(Uri.parse('http://192.168.0.5/public/api/loja/sobre'));
+          await http.get(Uri.parse('http://10.56.46.42/public/api/loja/sobre'));
       if (response.statusCode == 200) {
         setState(() {
           sobre = json.decode(
@@ -43,7 +44,8 @@ class _SobrePageState extends State<SobrePage> {
   Future<void> informacoesLoja() async {
     try {
       final response =
-          await http.get(Uri.parse('http://192.168.0.5/public/api/loja'));
+          // await http.get(Uri.parse('http://192.168.0.5/public/api/loja'));
+          await http.get(Uri.parse('http://10.56.46.42/public/api/loja'));
       if (response.statusCode == 200) {
         setState(() {
           // Carrega o JSON na variável infoLoja
@@ -148,7 +150,8 @@ class _SobrePageState extends State<SobrePage> {
                 children: [
                   Image.network(
                     infoLoja.isNotEmpty
-                        ? 'http://192.168.0.5/public/${infoLoja[0]['imagem_sobre_restaurante']}'
+                        // ? 'http://192.168.0.5/public/${infoLoja[0]['imagem_sobre_restaurante']}'
+                        ? 'http://10.56.46.42/public/${infoLoja[0]['imagem_sobre_restaurante']}'
                         : '',
                     width: double.infinity,
                     fit: BoxFit.cover,

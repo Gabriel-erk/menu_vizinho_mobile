@@ -59,8 +59,8 @@ class _CardapioPageState extends State<CardapioPage> {
   Future<void> listaCardapio() async {
     try {
       final response =
-          // await http.get(Uri.parse('http://10.56.46.42/public/api/cardapio'));
-          await http.get(Uri.parse('http://192.168.0.5/public/api/cardapio'));
+          await http.get(Uri.parse('http://10.56.46.42/public/api/cardapio'));
+          // await http.get(Uri.parse('http://192.168.0.5/public/api/cardapio'));
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         setState(() {
@@ -79,8 +79,8 @@ class _CardapioPageState extends State<CardapioPage> {
   Future<void> listaBanners() async {
     try {
       final response =
-          // await http.get(Uri.parse('http://10.56.46.42/public/api/banner'));
-          await http.get(Uri.parse('http://192.168.0.5/public/api/banner'));
+          await http.get(Uri.parse('http://10.56.46.42/public/api/banner'));
+          // await http.get(Uri.parse('http://192.168.0.5/public/api/banner'));
       if (response.statusCode == 200) {
         setState(() {
           // Decodificando a resposta JSON

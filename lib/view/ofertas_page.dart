@@ -35,8 +35,8 @@ class _OfertasPageState extends State<OfertasPage> {
   Future<void> listaOfertas() async {
     try {
       final response =
-          // await http.get(Uri.parse('http://10.56.46.42/public/api/ofertas'));
-          await http.get(Uri.parse('http://192.168.0.5/public/api/ofertas'));
+          await http.get(Uri.parse('http://10.56.46.42/public/api/ofertas'));
+          // await http.get(Uri.parse('http://192.168.0.5/public/api/ofertas'));
       if (response.statusCode == 200) {
         setState(() {
           produtos = json.decode(response.body);
@@ -53,8 +53,8 @@ class _OfertasPageState extends State<OfertasPage> {
   Future<void> listaBanners() async {
     try {
       final response =
-          // await http.get(Uri.parse('http://10.56.46.42/public/api/banner'));
-          await http.get(Uri.parse('http://192.168.0.5/public/api/banner'));
+          await http.get(Uri.parse('http://10.56.46.42/public/api/banner'));
+          // await http.get(Uri.parse('http://192.168.0.5/public/api/banner'));
       if (response.statusCode == 200) {
         setState(() {
           // Decodificando a resposta JSON

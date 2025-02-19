@@ -1,14 +1,11 @@
-import 'package:menu_vizinho_mobile/controller/autenticacao_controller.dart';
-import 'package:menu_vizinho_mobile/view/tela_login.dart';
-import 'package:menu_vizinho_mobile/view/sobre_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:menu_vizinho_mobile/controller/autenticacao_controller.dart';
+import 'package:menu_vizinho_mobile/view/tela_login.dart';
 
 void main() {
   runApp(
-    // chamando o provider que vai controlar a modificação de estado do nosso app
     MultiProvider(
-      // controlador que vai faze a modificação de estado do nosso app
       providers: [
         ChangeNotifierProvider(create: (_) => AutenticacaoController())
       ],
@@ -22,6 +19,22 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(debugShowCheckedModeBanner: false, home:SobrePage() );
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        brightness: Brightness.light,
+        appBarTheme: const AppBarTheme(
+          iconTheme: IconThemeData(color: Colors.white70),
+        ),
+      ),
+      // darkTheme: ThemeData(
+      //   brightness: Brightness.dark,
+      //   appBarTheme: const AppBarTheme(
+      //     iconTheme: IconThemeData(color: Colors.white),
+      //   ),
+      // ),
+      themeMode: ThemeMode.system, // Alterna entre claro e escuro automaticamente
+      home: const TelaLogin(),
+    );
   }
 }
