@@ -22,8 +22,8 @@ class _CuponsPageState extends State<CuponsPage> {
   Future<void> listaCupons() async {
     try {
       final response =
-          await http.get(Uri.parse('http://10.56.46.42/public/api/cupom'));
-      // await http.get(Uri.parse('http://192.168.0.5/public/api/cupom'));
+          // await http.get(Uri.parse('http://10.56.46.42/public/api/cupom'));
+      await http.get(Uri.parse('http://192.168.0.5/public/api/cupom'));
       if (response.statusCode == 200) {
         setState(() {
           cupons = json.decode(response.body);

@@ -1,5 +1,6 @@
 import 'package:menu_vizinho_mobile/controller/autenticacao_controller.dart';
 import 'package:menu_vizinho_mobile/view/tela_login.dart';
+import 'package:menu_vizinho_mobile/view/sobre_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -21,6 +22,6 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(debugShowCheckedModeBanner: false, home: TelaLogin());
+    return const MaterialApp(debugShowCheckedModeBanner: false, home:SobrePage() );
   }
 }

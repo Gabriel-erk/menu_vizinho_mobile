@@ -28,8 +28,8 @@ class _HomePageState extends State<HomePage> {
   Future<void> produtosHome() async {
     try {
       final response =
-          await http.get(Uri.parse('http://10.56.46.42/public/api/produtos'));
-      // await http.get(Uri.parse('http://192.168.0.5/public/api/produtos'));
+          // await http.get(Uri.parse('http://10.56.46.42/public/api/produtos'));
+      await http.get(Uri.parse('http://192.168.0.5/public/api/produtos'));
       if (response.statusCode == 200) {
         setState(() {
           produtos = json.decode(response.body);
@@ -47,8 +47,8 @@ class _HomePageState extends State<HomePage> {
   Future<void> listaBanners() async {
     try {
       final response =
-          await http.get(Uri.parse('http://10.56.46.42/public/api/banner'));
-      // await http.get(Uri.parse('http://192.168.0.5/public/api/banner'));
+          // await http.get(Uri.parse('http://10.56.46.42/public/api/banner'));
+      await http.get(Uri.parse('http://192.168.0.5/public/api/banner'));
       if (response.statusCode == 200) {
         setState(() {
           // Decodificando a resposta JSON

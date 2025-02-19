@@ -26,8 +26,8 @@ class _PoliticaPageState extends State<PoliticaPage> {
   Future<void> listaPolitica() async {
     try {
       final response = await http
-          .get(Uri.parse('http://10.56.46.42/public/api/loja/politica'));
-      // await http.get(Uri.parse('http://192.168.0.5/public/api/cupom'));
+          // .get(Uri.parse('http://10.56.46.42/public/api/loja/politica'));
+          .get(Uri.parse('http://192.168.0.5/public/api/loja/politica'));
       if (response.statusCode == 200) {
         setState(() {
           politica = json.decode(response.body);

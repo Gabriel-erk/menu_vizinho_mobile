@@ -25,13 +25,31 @@ class _SobrePageState extends State<SobrePage> {
   Future<void> sobreLoja() async {
     try {
       final response =
-          await http.get(Uri.parse('http://10.56.46.42/public/api/loja/sobre'));
-      // await http.get(Uri.parse('http://192.168.0.5/public/api/cupom'));
+          // await http.get(Uri.parse('http://10.56.46.42/public/api/loja/sobre'));
+          await http.get(Uri.parse('http://192.168.0.5/public/api/loja/sobre'));
       if (response.statusCode == 200) {
         setState(() {
+          // API ESTA RETORNANDO APENAS UM TEXTO, ENTÃO APENAS O ARMAZENO AQUI DIRETAMENTE
+          sobre = response.body; // Apenas armazena a string diretamente
+
+          isLoading = false;
+        });
+      } else {
+        mostrarError('Erro ao carregar dados');
+      }
+    } catch (e) {
+      mostrarError('Erro: $e');
+    }
+  }
+
+  Future<void> informacoesLoja() async {
+    try {
+      final response =
+          await http.get(Uri.parse('http://192.168.0.5/public/api/loja'));
+      if (response.statusCode == 200) {
+        setState(() {
+          // Carrega o JSON na variável infoLoja
           infoLoja = json.decode(response.body);
-          var loja = infoLoja[0];
-          sobre = loja['texto_sobre_restaurante'];
 
           isLoading = false;
         });
@@ -49,10 +67,11 @@ class _SobrePageState extends State<SobrePage> {
   }
 
   @override
-void initState() {
-  super.initState();
-  sobreLoja();
-}
+  void initState() {
+    super.initState();
+    sobreLoja();
+    informacoesLoja();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -124,7 +143,45 @@ void initState() {
       ),
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
-          : SingleChildScrollView(),
+          : SingleChildScrollView(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Image.network(
+                    infoLoja.isNotEmpty
+                        ? 'http://192.168.0.5/public/${infoLoja[0]['imagem_sobre_restaurante']}'
+                        : '',
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) =>
+                        const Icon(Icons.image_not_supported),
+                  ),
+                  const SizedBox(height: 20),
+                  SelectableText(
+                    sobre, // Exibe o texto da API
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
+                    ),
+                    textAlign: TextAlign.justify, // Mantém alinhado e legível
+                  ),
+                  const SizedBox(height: 20),
+                  const Text(
+                    'Para aproveitar melhor os nossos serviços, visite o site: ',
+                    style: TextStyle(fontSize: 16, color: Colors.grey),
+                    textAlign: TextAlign.center,
+                  ),
+                  Text(
+                    infoLoja.isNotEmpty
+                        ? 'www.${infoLoja[0]['nome_loja']}.com'
+                        : '',
+                    style: const TextStyle(fontSize: 16, color: Colors.blue),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
+            ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         backgroundColor: const Color(0xff8c6342),
